@@ -6,12 +6,33 @@ public class World : MonoBehaviour {
 	public Dictionary<WorldPos, Chunk> chunks = new Dictionary<WorldPos, Chunk>();
 	public GameObject chunkPrefab;
 
+	public string worldName = "world";
+
+	//testing vars
+	public int newChunkX, newChunkY, newChunkZ;
+	public bool genChunk;
+
 	public void Start() {
-		for (int x = -2; x < 2; x++) {
-			for (int y = -1; y < 1; y++) {
-				for (int z = -1; z < 1; z++) {
+		for (int x = -4; x < 4; x++) {
+			for (int y = -1; y < 3; y++) {
+				for (int z = -4; z < 4; z++) {
 					CreateChunk (x * 16, y * 16, z * 16);
 				}
+			}
+		}
+	}
+
+	public void Update() {
+		//testng stuff
+		if(genChunk) {
+			genChunk = false;
+			WorldPos chunkPos = new WorldPos(newChunkX, newChunkY, newChunkZ);
+			Chunk chunk = null;
+
+			if(chunks.TryGetValue(chunkPos, out chunk)) {
+				DestroyChunk(chunkPos.x, chunkPos.y, chunkPos.z);
+			} else {
+				CreateChunk(chunkPos.x, chunkPos.y, chunkPos.z);
 			}
 		}
 	}
@@ -26,24 +47,20 @@ public class World : MonoBehaviour {
 		newChunk.world = this;
 
 		chunks.Add(worldPos, newChunk);
+		
+		//generate the chunk
+		var terrainGen = new TerrainGen();
+		newChunk = terrainGen.ChunkGen(newChunk);
+		newChunk.SetBlocksUnmodified();
 
-		//TESTING
-		for (int xi = 0; xi < 16; xi++) {
-			for (int yi = 0; yi < 16; yi++) {
-				for (int zi = 0; zi < 16; zi++) {
-					if (yi <= 7) {
-						SetBlock (x + xi, y + yi, z + zi, new BlockGrass ());
-					} else {
-						SetBlock (x + xi, y + yi, z + zi, new BlockAir ());
-					}
-				}
-			}
-		}
+		//load changed blocks
+		Serialization.Load(newChunk);
 	}
 
 	public void DestroyChunk(int x, int y, int z) {
 		Chunk chunk = null;
 		if(chunks.TryGetValue(new WorldPos(x, y, z), out chunk)) {
+			Serialization.SaveChunk(chunk);
 			Object.Destroy(chunk.gameObject);
 			chunks.Remove(new WorldPos(x, y, z));
 		}

@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
+[Serializable]
 public class Block {
 
 	public enum Direction {north, south, east, west, up, down};
 	public struct Tile { public int x; public int y;}
 	const float tileSize = 0.25f;//1 divided by number of tiles per side (aka 0.25 on a 4x4 texture)
+
+	public bool changed = true;
 
 	//base constructor
 	public Block() {

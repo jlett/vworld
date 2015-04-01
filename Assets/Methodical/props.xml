@@ -1,0 +1,8 @@
+<!--Copyright © 2015 ABXY Games-->
+<BuildProps>
+	<VersionNum>1.2.3</VersionNum>
+	<LinkageSite>http://www.abxygames.com/redirects/methodicallinkagelanding.php</LinkageSite>
+	<SupportLink>http://abxygames.com/redirects/methodicalsupport.php</SupportLink>
+	<TwitterHandle>http://abxygames.com/redirects/twitter.php</TwitterHandle>
+	<UpdateCheckURL>http://abxygames.com/redirects/methodicalupdatecheck.php</UpdateCheckURL>
+</BuildProps>

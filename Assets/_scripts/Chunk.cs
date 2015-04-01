@@ -6,7 +6,7 @@ using System.Collections;
 [RequireComponent(typeof(MeshCollider))]
 
 public class Chunk : MonoBehaviour {
-	Block[ , , ] blocks = new Block[chunkSize, chunkSize, chunkSize];
+	public Block[ , , ] blocks = new Block[chunkSize, chunkSize, chunkSize];
 	public static int chunkSize = 16;
 	public bool update = true;
 	public World world;
@@ -49,6 +49,13 @@ public class Chunk : MonoBehaviour {
 		}
 	}
 
+	//set changed flag to false on all blocks (called during initial world gen)
+	public void SetBlocksUnmodified() {
+		foreach(Block block in blocks) {
+			block.changed = false;
+		}
+	}
+
 	//updates the chunk based on it's contents
 	void UpdateChunk() {
 		MeshData meshData = new MeshData();
@@ -63,6 +70,7 @@ public class Chunk : MonoBehaviour {
 		
 		RenderMesh(meshData);
 	}
+
 	//sends the calculated mesh info to mesh and collision components
 	void RenderMesh(MeshData meshData) {
 		filter.mesh.Clear();
