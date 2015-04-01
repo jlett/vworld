@@ -8,7 +8,7 @@ public class BlockDirt : Block {
 		
 	}
 	
-	public override Tile GetTexturePosition (Direction direction) {
+	public override Tile GetTexturePosition () {
 		Tile tile = new Tile();
 		tile.x = 1;
 		tile.y = 0;

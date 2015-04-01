@@ -12,26 +12,26 @@ public class MeshData {
 	public bool useRenderDataForCollision = false;
 
 	public MeshData() {}
+	
+	//verticies must listed in a CLOCKWISE order
+	//params are how many verts back to go (4 would be the vertex added 4 back)
+	public void AddQuadTriangles(int t0, int t1, int t2, int t3) {
+		triangles.Add(vertices.Count - (t0+1));
+		triangles.Add(vertices.Count - (t1+1));
+		triangles.Add(vertices.Count - (t2+1));
 
-	//make quad out of last 4 verticies
-	//verticies must added in a CLOCKWISE order
-	public void AddQuadTriangles() {
-		triangles.Add(vertices.Count - 4);
-		triangles.Add(vertices.Count - 3);
-		triangles.Add(vertices.Count - 2);
-
-		triangles.Add(vertices.Count - 4);
-		triangles.Add(vertices.Count - 2);
-		triangles.Add(vertices.Count - 1);
+		triangles.Add(vertices.Count - (t0+1));
+		triangles.Add(vertices.Count - (t2+1));
+		triangles.Add(vertices.Count - (t3+1));
 
 		if(useRenderDataForCollision) {
-			colTriangles.Add(vertices.Count - 4);
-			colTriangles.Add(vertices.Count - 3);
-			colTriangles.Add(vertices.Count - 2);
+			colTriangles.Add(vertices.Count - (t0+1));
+			colTriangles.Add(vertices.Count - (t1+1));
+			colTriangles.Add(vertices.Count - (t2+1));
 			
-			colTriangles.Add(vertices.Count - 4);
-			colTriangles.Add(vertices.Count - 2);
-			colTriangles.Add(vertices.Count - 1);
+			colTriangles.Add(vertices.Count - (t0+1));
+			colTriangles.Add(vertices.Count - (t2+1));
+			colTriangles.Add(vertices.Count - (t3+1));
 		}
 	}
 
@@ -42,15 +42,34 @@ public class MeshData {
 		}
 	}
 
-	public void AddTriangle(int tri) {
-		triangles.Add(tri);
+	public void AddTriangle(int t0, int t1, int t2) {
+		triangles.Add(vertices.Count - (t0+1));
+		triangles.Add(vertices.Count - (t1+1));
+		triangles.Add(vertices.Count - (t2+1));
 		if(useRenderDataForCollision) {
-			colTriangles.Add(tri - (vertices.Count - colVertices.Count));
+			colTriangles.Add(vertices.Count - (t0+1));
+			colTriangles.Add(vertices.Count - (t1+1));
+			colTriangles.Add(vertices.Count - (t2+1));
 		}
 	}
 
-	//remove duplicate vertices, stiching the triangles together
-	public void RemoveDoubles() {
-
+	public void AddColQuadTriangles(int t0, int t1, int t2, int t3) {
+		colTriangles.Add(vertices.Count - (t0+1));
+		colTriangles.Add(vertices.Count - (t1+1));
+		colTriangles.Add(vertices.Count - (t2+1));
+		
+		colTriangles.Add(vertices.Count - (t0+1));
+		colTriangles.Add(vertices.Count - (t2+1));
+		colTriangles.Add(vertices.Count - (t3+1));
+	}
+	
+	public void AddColVertex(Vector3 vertex) {
+		colVertices.Add(vertex);
+	}
+	
+	public void AddColTriangle(int t0, int t1, int t2) {
+		colTriangles.Add(vertices.Count - (t0+1));
+		colTriangles.Add(vertices.Count - (t1+1));
+		colTriangles.Add(vertices.Count - (t2+1));
 	}
 }

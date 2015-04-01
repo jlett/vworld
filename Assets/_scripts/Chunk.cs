@@ -81,7 +81,7 @@ public class Chunk : MonoBehaviour {
 		filter.mesh.vertices = meshData.vertices.ToArray();
 		filter.mesh.triangles = meshData.triangles.ToArray();
 
-		filter.mesh.uv = meshData.uv.ToArray();
+		//filter.mesh.uv = meshData.uv.ToArray();
 		filter.mesh.RecalculateNormals();
 
 		coll.sharedMesh = null;
