@@ -11,7 +11,7 @@ public class TerrainGen {
 
 	//mountain/hill layer
 	float stoneMountainHeight = 48;
-	float stoneMountainFrequency = 0.008f;//frequency of mountain layer
+	float stoneMountainFrequency = 0.004f;//frequency of mountain layer
 	float stoneMinHeight = -12;
 
 	//dirt layer
@@ -30,13 +30,13 @@ public class TerrainGen {
 
 	public Chunk ChunkColumnGen(Chunk chunk, int x, int z) {
 		int stoneHeight = Mathf.FloorToInt(stoneBaseHeight);													//set base height
-		stoneHeight += GetNoise(x, 0, z, stoneMountainFrequency, Mathf.FloorToInt(stoneMountainHeight));		//add mountain noise
+		stoneHeight += GetNoise(x, 0, z, stoneMountainFrequency, Mathf.FloorToInt(stoneMountainHeight), 0.5f);		//add mountain noise
 		if(stoneHeight < stoneMinHeight)
 			stoneHeight = Mathf.FloorToInt(stoneMinHeight);														//raise all stone up to min height (if needed)
-		stoneHeight += GetNoise(x, 0, z, stoneBaseNoise, Mathf.FloorToInt(stoneBaseNoiseHeight));				//add base noise
+		stoneHeight += GetNoise(x, 0, z, stoneBaseNoise, Mathf.FloorToInt(stoneBaseNoiseHeight), 0.2f);				//add base noise
 
 		int dirtHeight = stoneHeight + Mathf.FloorToInt(dirtBaseHeight);										//set base dirt height
-		dirtHeight += GetNoise(x, 100, z, dirtNoise, Mathf.FloorToInt(dirtNoiseHeight));						//add noise to dirt height
+		dirtHeight += GetNoise(x, 100, z, dirtNoise, Mathf.FloorToInt(dirtNoiseHeight), 0.1f);						//add noise to dirt height
 
 		int grassHeight = dirtHeight + 1;																		//add layer of grass on top
 
@@ -54,9 +54,10 @@ public class TerrainGen {
 		return chunk;
 	}
 
-	public static int GetNoise(int x, int y, int z, float scale, int max) {
+	public static int GetNoise(int x, int y, int z, float scale, int max, float intensity) {
 		string seed = "hello world!";
 		PinkNoise n = new PinkNoise(seed.GetHashCode());
+		n.Persistence = intensity;
 		return Mathf.FloorToInt((n.GetValue(x*scale, y*scale, z*scale) + 1f) * (max/2f));
 	}
 }
