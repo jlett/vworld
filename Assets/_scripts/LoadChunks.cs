@@ -93,7 +93,7 @@ public class LoadChunks : MonoBehaviour {
 	}
 
 	void LoadAndRenderChunks() {
-		for(int i = 0; i < 8; i++) {//4 = how many chunks to build per frame
+		for(int i = 0; i < 3; i++) {//# = how many chunks to build per frame, should eventually be variable based on distance from player
 			if(buildList.Count != 0) {
 				BuildChunk(buildList[0]);
 				buildList.RemoveAt(0);
