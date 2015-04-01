@@ -8,9 +8,11 @@ using System.Collections;
 public class Chunk : MonoBehaviour {
 	public Block[ , , ] blocks = new Block[chunkSize, chunkSize, chunkSize];
 	public static int chunkSize = 16;
-	public bool update = true;
+	public bool update = false;
 	public World world;
 	public WorldPos pos;
+
+	public bool rendered;
 
 	MeshFilter filter;
 	MeshCollider coll;
@@ -58,6 +60,8 @@ public class Chunk : MonoBehaviour {
 
 	//updates the chunk based on it's contents
 	void UpdateChunk() {
+		rendered = true;
+
 		MeshData meshData = new MeshData();
 		
 		for(int x = 0; x < chunkSize; x++) {

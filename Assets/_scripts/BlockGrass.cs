@@ -14,7 +14,7 @@ public class BlockGrass : Block {
 			tile.x = 2;
 			tile.y = 0;
 		} else if(direction == Direction.down) {
-			tile.x = 0;
+			tile.x = 1;
 			tile.y = 0;
 		} else {
 			tile.x = 3;

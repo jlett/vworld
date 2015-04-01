@@ -48,4 +48,9 @@ public class MeshData {
 			colTriangles.Add(tri - (vertices.Count - colVertices.Count));
 		}
 	}
+
+	//remove duplicate vertices, stiching the triangles together
+	public void RemoveDoubles() {
+
+	}
 }
