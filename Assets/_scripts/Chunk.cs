@@ -6,9 +6,11 @@ using System.Collections;
 [RequireComponent(typeof(MeshCollider))]
 
 public class Chunk : MonoBehaviour {
-	Block[ , , ] blocks;
+	Block[ , , ] blocks = new Block[chunkSize, chunkSize, chunkSize];
 	public static int chunkSize = 16;
 	public bool update = true;
+	public World world;
+	public WorldPos pos;
 
 	MeshFilter filter;
 	MeshCollider coll;
@@ -16,29 +18,35 @@ public class Chunk : MonoBehaviour {
 	void Start() {
 		filter = gameObject.GetComponent<MeshFilter>();
 		coll = gameObject.GetComponent<MeshCollider>();
-
-		//example chunk
-		blocks = new Block[chunkSize, chunkSize, chunkSize];
-
-		for(int x = 0; x < chunkSize; x++) {
-			for(int y = 0; y < chunkSize; y++) {
-				for(int z = 0; z < chunkSize; z++) {
-					blocks[x, y, z] = new BlockAir();
-				}
-			}
-		}
-
-		blocks[3, 5, 2] = new Block();
-		UpdateChunk();
 	}
 
 	void Update() {
-
+		if(update) {
+			update = false;
+			UpdateChunk();
+		}
 	}
 
 	//returns the requested block at coords relative to chunk origin
 	public Block GetBlock(int x, int y, int z) {
-		return blocks[x, y, z];
+		if(CoordInRange(x) && CoordInRange(y) && CoordInRange(z)) {
+			return blocks[x, y, z];
+		}
+		return world.GetBlock(pos.x + x, pos.y + y, pos.z + z);
+	}
+
+	public static bool CoordInRange(int index) {
+		if(index < 0 || index >= chunkSize)
+			return false;
+		return true;
+	}
+
+	public void SetBlock(int x, int y, int z, Block block) {
+		if(CoordInRange(x) && CoordInRange(y) && CoordInRange(z)) {
+			blocks[x, y, z] = block;
+		} else {
+			world.SetBlock(pos.x + x, pos.y + y, pos.z + z, block);
+		}
 	}
 
 	//updates the chunk based on it's contents
@@ -60,5 +68,15 @@ public class Chunk : MonoBehaviour {
 		filter.mesh.Clear();
 		filter.mesh.vertices = meshData.vertices.ToArray();
 		filter.mesh.triangles = meshData.triangles.ToArray();
+
+		filter.mesh.uv = meshData.uv.ToArray();
+		filter.mesh.RecalculateNormals();
+
+		coll.sharedMesh = null;
+		Mesh mesh = new Mesh();
+		mesh.vertices = meshData.colVertices.ToArray();
+		mesh.triangles = meshData.colTriangles.ToArray();
+		mesh.RecalculateNormals();
+		coll.sharedMesh = mesh;
 	}
 }
