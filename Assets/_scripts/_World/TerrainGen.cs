@@ -42,7 +42,7 @@ public class TerrainGen {
 
 		for(int y = chunk.pos.y; y < chunk.pos.y + Chunk.chunkSize; y++) {										//decide which block goes where based on height
 			if(y <= stoneHeight) {
-				chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new Block());
+				chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new BlockStone());
 			} else if(y <= dirtHeight) {
 				chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new BlockDirt());
 			} else if(y <= grassHeight) {
