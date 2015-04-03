@@ -146,8 +146,21 @@ public class GameModeSurvival: GameMode {
 			speed = (speed == walkSpeed? runSpeed : walkSpeed);
 	}
 
-	protected override void HandleInput () {
+	protected override void HandleInput() {
 		base.HandleInput();
+		if(!pauseMenuUp) {
+			if (Input.GetMouseButtonDown(1)) {
+				RaycastHit hit;
+				if (Physics.Raycast(transform.GetChild(0).position, transform.GetChild(0).forward,out hit, 100 )) {
+					Terrain.SetBlock(hit, new BlockAir());
+				}
+			} else if (Input.GetMouseButtonDown(0)) {
+				RaycastHit hit;
+				if (Physics.Raycast(transform.GetChild(0).position, transform.GetChild(0).forward,out hit, 100 )) {
+					Terrain.SetBlock(hit, new BlockDirt(), true);
+				}
+			}
+		}
 	}
 	
 	// Store point that we're in contact with for use in FixedUpdate if needed
