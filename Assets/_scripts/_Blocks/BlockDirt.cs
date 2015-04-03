@@ -3,9 +3,9 @@ using System.Collections;
 using System;
 
 [Serializable]
-public class BlockDirt : Block {
+public class BlockDirt : BlockTerrain {
 	public BlockDirt() : base() {
-		
+
 	}
 	
 	public override Tile GetTexturePosition (Direction direction) {

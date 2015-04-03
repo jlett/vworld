@@ -9,6 +9,8 @@ public class BlockAir : Block {
 	}
 
 	public override MeshData BlockData (Chunk chunk, int x, int y, int z, MeshData meshData) {
+		//air will connect terrain blocks next to it
+
 		return meshData;
 	}
 
