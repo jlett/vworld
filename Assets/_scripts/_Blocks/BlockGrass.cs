@@ -8,18 +8,10 @@ public class BlockGrass : BlockTerrain {
 
 	}
 
-	public override Tile GetTexturePosition (Direction direction) {
+	public override Tile GetTexturePosition (Direction direction, Chunk chunk, int x, int y, int z) {
 		Tile tile = new Tile();
-		if(direction == Direction.up) {
-			tile.x = 2;
-			tile.y = 0;
-		} else if(direction == Direction.down) {
-			tile.x = 1;
-			tile.y = 0;
-		} else {
-			tile.x = 3;
-			tile.y = 0;
-		}
+		tile.x = 2;
+		tile.y = 0;
 		return tile;
 	}
 }

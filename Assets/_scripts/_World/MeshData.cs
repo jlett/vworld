@@ -32,13 +32,13 @@ public class MeshData {
 		triangles.Add(vertices.Count - (t3));
 	
 		if(useRenderDataForCollision) {
-			colTriangles.Add(vertices.Count - (t0));
-			colTriangles.Add(vertices.Count - (t1));
-			colTriangles.Add(vertices.Count - (t2));
+			colTriangles.Add(colVertices.Count - (t0));
+			colTriangles.Add(colVertices.Count - (t1));
+			colTriangles.Add(colVertices.Count - (t2));
 			
-			colTriangles.Add(vertices.Count - (t0));
-			colTriangles.Add(vertices.Count - (t2));
-			colTriangles.Add(vertices.Count - (t3));
+			colTriangles.Add(colVertices.Count - (t0));
+			colTriangles.Add(colVertices.Count - (t2));
+			colTriangles.Add(colVertices.Count - (t3));
 		}
 	}
 
@@ -53,9 +53,9 @@ public class MeshData {
 		triangles.Add(vertices.Count - (t1));
 		triangles.Add(vertices.Count - (t2));
 		if(useRenderDataForCollision) {
-			colTriangles.Add(vertices.Count - (t0));
-			colTriangles.Add(vertices.Count - (t1));
-			colTriangles.Add(vertices.Count - (t2));
+			colTriangles.Add(colVertices.Count - (t0));
+			colTriangles.Add(colVertices.Count - (t1));
+			colTriangles.Add(colVertices.Count - (t2));
 		}
 	}
 
@@ -71,13 +71,13 @@ public class MeshData {
 	}
 	
 	public void AddColQuadTriangles(int t0, int t1, int t2, int t3) {
-		colTriangles.Add(vertices.Count - (t0));
-		colTriangles.Add(vertices.Count - (t1));
-		colTriangles.Add(vertices.Count - (t2));
+		colTriangles.Add(colVertices.Count - (t0));
+		colTriangles.Add(colVertices.Count - (t1));
+		colTriangles.Add(colVertices.Count - (t2));
 		
-		colTriangles.Add(vertices.Count - (t0));
-		colTriangles.Add(vertices.Count - (t2));
-		colTriangles.Add(vertices.Count - (t3));
+		colTriangles.Add(colVertices.Count - (t0));
+		colTriangles.Add(colVertices.Count - (t2));
+		colTriangles.Add(colVertices.Count - (t3));
 	}
 
 	//make quad out of last 4 verticies
@@ -88,9 +88,9 @@ public class MeshData {
 	}
 	
 	public void AddColTriangle(int t0, int t1, int t2) {
-		colTriangles.Add(vertices.Count - (t0));
-		colTriangles.Add(vertices.Count - (t1));
-		colTriangles.Add(vertices.Count - (t2));
+		colTriangles.Add(colVertices.Count - (t0));
+		colTriangles.Add(colVertices.Count - (t1));
+		colTriangles.Add(colVertices.Count - (t2));
 	}
 
 	//make tri out of last 3 verticies
