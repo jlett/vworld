@@ -40,26 +40,26 @@ public class BlockAir : Block {
 			numTer++;
 
 		if(numTer == 2) {
-			if(northTer) {																																				//case 1
+			if(northTer) {																													//case 1 (four sub cases removed cause they were ugly)
 				if(downTer) {
 					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {9, 11, 18, 19}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
 				} else if(upTer) {
 					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {11, 17, 16, 9}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
-				} else if(eastTer) {
+				} /*else if(eastTer) {
 					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {8, 17, 18, 10}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
 				} else if(westTer) {
 					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {8, 10, 19, 16}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
-				}
+				}*/
 			} else if(southTer) {
 				if(downTer) {
 					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {13, 15, 19, 18}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
 				} else if(upTer) {
 					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {15, 16, 17, 13}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
-				} else if(eastTer) {
+				} /*else if(eastTer) {
 					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {12, 14, 18, 17}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
 				} else if(westTer) {
 					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {12, 16, 19, 14}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
-				}
+				}*/
 			} else if(downTer) {
 				if(eastTer) {
 					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {11, 13, 14, 10}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
@@ -71,6 +71,44 @@ public class BlockAir : Block {
 					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {8, 11, 13, 12}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
 				} else if(westTer) {
 					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {8, 9, 15, 16}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+				}
+			}
+		} else if(numTer == 3) {																											//case 2
+			if(downTer) {
+				if(northTer) {
+					if(westTer) {
+						meshData = AddFaceQuad(chunk, x, y, z, new int[4] {15, 9, 10, 14}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+						meshData = AddFaceQuad(chunk, x, y, z, new int[4] {9, 11, 18, 19}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+					} else if(eastTer) {
+						meshData = AddFaceQuad(chunk, x, y, z, new int[4] {11, 13, 14, 10}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+						meshData = AddFaceQuad(chunk, x, y, z, new int[4] {9, 11, 18, 19}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+					}
+				} else if(southTer) {
+					if(westTer) {
+						meshData = AddFaceQuad(chunk, x, y, z, new int[4] {15, 9, 10, 14}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+						meshData = AddFaceQuad(chunk, x, y, z, new int[4] {13, 15, 19, 18}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+					} else if(eastTer) {
+						meshData = AddFaceQuad(chunk, x, y, z, new int[4] {11, 13, 14, 10}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+						meshData = AddFaceQuad(chunk, x, y, z, new int[4] {13, 15, 19, 18}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+					}
+				}
+			} else if(upTer) {
+				if(northTer) {
+					if(westTer) {
+						meshData = AddFaceQuad(chunk, x, y, z, new int[4] {9, 15, 12, 8}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+						meshData = AddFaceQuad(chunk, x, y, z, new int[4] {11, 9, 16, 17}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+					} else if(eastTer) {
+						meshData = AddFaceQuad(chunk, x, y, z, new int[4] {11, 13, 12, 8}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+						meshData = AddFaceQuad(chunk, x, y, z, new int[4] {11, 9, 16, 17}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+					}
+				} else if(southTer) {
+					if(westTer) {
+						meshData = AddFaceQuad(chunk, x, y, z, new int[4] {9, 15, 12, 8}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+						meshData = AddFaceQuad(chunk, x, y, z, new int[4] {13, 15, 16, 17}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+					} else if(eastTer) {
+						meshData = AddFaceQuad(chunk, x, y, z, new int[4] {11, 13, 12, 8}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+						meshData = AddFaceQuad(chunk, x, y, z, new int[4] {13, 15, 16, 17}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+					}
 				}
 			}
 		}

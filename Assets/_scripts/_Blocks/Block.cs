@@ -193,6 +193,61 @@ public class Block {
 		meshData.uv.AddRange(GetTriUVs(dir));
 		return meshData;
 	}
+
+	protected MeshData AddFaceTri(Chunk chunk, int x, int y, int z, int[] t, Tile tile, MeshData meshData) {
+		if(t.Length != 3) {
+			Debug.LogError("3 points are required for a tri... idiot");
+		}
+		for(int i = 0; i < 3; i++) {
+			if(t[i] == 0) {
+				meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f));
+			} else if(t[i] == 1) {
+				meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z + 0.5f));
+			} else if(t[i] == 2) {
+				meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z + 0.5f));
+			} else if(t[i] == 3) {
+				meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f));
+			} else if(t[i] == 4) {
+				meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f));
+			} else if(t[i] == 5) {
+				meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z - 0.5f));
+			} else if(t[i] == 6) {
+				meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f));
+			} else if(t[i] == 7) {
+				meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f));
+			} else if(t[i] == 8) {//
+				meshData.AddVertex(new Vector3(x, y + 0.5f, z + 0.5f));
+			} else if(t[i] == 9) {
+				meshData.AddVertex(new Vector3(x - 0.5f, y, z + 0.5f));
+			} else if(t[i] == 10) {
+				meshData.AddVertex(new Vector3(x, y - 0.5f, z + 0.5f));
+			} else if(t[i] == 11) {
+				meshData.AddVertex(new Vector3(x + 0.5f, y, z + 0.5f));
+			} else if(t[i] == 12) {
+				meshData.AddVertex(new Vector3(x, y + 0.5f, z - 0.5f));
+			} else if(t[i] == 13) {
+				meshData.AddVertex(new Vector3(x + 0.5f, y, z - 0.5f));
+			} else if(t[i] == 14) {
+				meshData.AddVertex(new Vector3(x, y - 0.5f, z - 0.5f));
+			} else if(t[i] == 15) {
+				meshData.AddVertex(new Vector3(x - 0.5f, y, z - 0.5f));
+			} else if(t[i] == 16) {
+				meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z));
+			} else if(t[i] == 17) {
+				meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z));
+			} else if(t[i] == 18) {
+				meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z));
+			} else if(t[i] == 19) {
+				meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z));
+			} else {
+				Debug.LogError("AddFaceTri(...) vertex out of bounds: " + t[i]);
+			}
+		}
+		meshData.AddTriangle();
+		
+		meshData.uv.AddRange(GetTriUVs(tile));
+		return meshData;
+	}
 	
 	protected MeshData AddFaceQuad(Chunk chunk, int x, int y, int z, int[] t, Tile tile, MeshData meshData) {
 		if(t.Length != 4) {
