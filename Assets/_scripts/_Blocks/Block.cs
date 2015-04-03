@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
 [Serializable]
 public class Block {
@@ -124,6 +125,18 @@ public class Block {
 	 * 6 = +--
 	 * 7 = ---
 	 * 
+	 * 8 = 	0++
+	 * 9 = 	-0+
+	 * 10 = 0-+
+	 * 11 = +0+
+	 * 12 = 0+-
+	 * 13 = +0-
+	 * 14 = 0--
+	 * 15 = -0-
+	 * 16 = -+0
+	 * 17 = ++0
+	 * 18 = +-0
+	 * 19 = --0
 	 * dir = which face to texture with
 	 */
 	protected MeshData AddFaceTri(Chunk chunk, int x, int y, int z, int[] t, Direction dir, MeshData meshData) {
@@ -144,6 +157,32 @@ public class Block {
 				meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f));
 			} else if(t[i] == 7) {
 				meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f));
+			} else if(t[i] == 8) {//
+				meshData.AddVertex(new Vector3(x, y + 0.5f, z + 0.5f));
+			} else if(t[i] == 9) {
+				meshData.AddVertex(new Vector3(x - 0.5f, y, z + 0.5f));
+			} else if(t[i] == 10) {
+				meshData.AddVertex(new Vector3(x, y - 0.5f, z + 0.5f));
+			} else if(t[i] == 11) {
+				meshData.AddVertex(new Vector3(x + 0.5f, y, z + 0.5f));
+			} else if(t[i] == 12) {
+				meshData.AddVertex(new Vector3(x, y + 0.5f, z - 0.5f));
+			} else if(t[i] == 13) {
+				meshData.AddVertex(new Vector3(x + 0.5f, y, z - 0.5f));
+			} else if(t[i] == 14) {
+				meshData.AddVertex(new Vector3(x, y - 0.5f, z - 0.5f));
+			} else if(t[i] == 15) {
+				meshData.AddVertex(new Vector3(x - 0.5f, y, z - 0.5f));
+			} else if(t[i] == 16) {
+				meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z));
+			} else if(t[i] == 17) {
+				meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z));
+			} else if(t[i] == 18) {
+				meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z));
+			} else if(t[i] == 19) {
+				meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z));
+			} else {
+				Debug.LogError("AddFaceTri(...) vertex out of bounds: " + t[i]);
 			}
 		}
 		meshData.AddTriangle();
@@ -208,7 +247,7 @@ public class Block {
 		Vector2[] UVs = new Vector2[3];
 		Tile tilePos = GetTexturePosition(direction);
 		
-		UVs[0] = new Vector2(tileSize*tilePos.x, tileSize*tilePos.y + tileSize);
+		UVs[0] = new Vector2(tileSize*tilePos.x + tileSize, tileSize*tilePos.y);
 		UVs[1] = new Vector2(tileSize*tilePos.x + tileSize, tileSize*tilePos.y + tileSize);
 		UVs[2] = new Vector2(tileSize*tilePos.x, tileSize*tilePos.y);
 		
