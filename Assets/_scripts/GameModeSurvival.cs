@@ -151,12 +151,12 @@ public class GameModeSurvival: GameMode {
 		if(!pauseMenuUp) {
 			if (Input.GetMouseButtonDown(1)) {
 				RaycastHit hit;
-				if (Physics.Raycast(transform.position, transform.forward,out hit, 100 )) {
+				if (Physics.Raycast(transform.GetChild(0).position, transform.GetChild(0).forward,out hit, 100 )) {
 					Terrain.SetBlock(hit, new BlockAir());
 				}
 			} else if (Input.GetMouseButtonDown(0)) {
 				RaycastHit hit;
-				if (Physics.Raycast(transform.position, transform.forward,out hit, 100 )) {
+				if (Physics.Raycast(transform.GetChild(0).position, transform.GetChild(0).forward,out hit, 100 )) {
 					Terrain.SetBlock(hit, new BlockDirt(), true);
 				}
 			}
