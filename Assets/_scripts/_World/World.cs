@@ -8,31 +8,39 @@ public class World : MonoBehaviour {
 
 	public string worldName = "world";
 
-	public void CreateChunk(int x, int y, int z) {
+	public Chunk LoadChunk(int x, int y, int z) {
 		WorldPos worldPos = new WorldPos(x, y, z);
 
-		GameObject newChunkObj = Instantiate(chunkPrefab, new Vector3(x, y, z), Quaternion.identity) as GameObject;
-		Chunk newChunk = newChunkObj.GetComponent<Chunk>();
-
+		Chunk newChunk = new Chunk();
+		
 		newChunk.pos = worldPos;
 		newChunk.world = this;
-
+		
 		chunks.Add(worldPos, newChunk);
 		
 		//generate the chunk
 		var terrainGen = new TerrainGen();
 		newChunk = terrainGen.ChunkGen(newChunk);
 		newChunk.SetBlocksUnmodified();
-
+		
 		//load changed blocks
 		Serialization.Load(newChunk);
+
+		return newChunk;
+	}
+
+	public void CreateChunk(Chunk chunk) {
+		GameObject newChunkObj = Instantiate(chunkPrefab, new Vector3(chunk.pos.x, chunk.pos.y, chunk.pos.z), Quaternion.identity) as GameObject;
+		ChunkContainer newChunkContainer = newChunkObj.GetComponent<ChunkContainer>();
+		newChunkContainer.chunk = chunk;
+		newChunkContainer.chunk.container = newChunkContainer;
 	}
 
 	public void DestroyChunk(int x, int y, int z) {
 		Chunk chunk = null;
 		if(chunks.TryGetValue(new WorldPos(x, y, z), out chunk)) {
 			Serialization.SaveChunk(chunk);
-			Object.Destroy(chunk.gameObject);
+			Object.Destroy(chunk.container.gameObject);
 			chunks.Remove(new WorldPos(x, y, z));
 		}
 	}

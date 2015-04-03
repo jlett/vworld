@@ -16,8 +16,8 @@ public class BlockAir : Block {
 		bool southSolid = chunk.GetBlock(x, y, z-1).IsSolid(Direction.north);
 		bool eastSolid = chunk.GetBlock(x+1, y, z).IsSolid(Direction.west);
 		bool westSolid = chunk.GetBlock(x-1, y, z).IsSolid(Direction.east);
-		bool upSolid = chunk.GetBlock(x, y+1, z).IsSolid(Direction.down);
-		bool downSolid = chunk.GetBlock(x, y-1, z).IsSolid(Direction.up);
+//		bool upSolid = chunk.GetBlock(x, y+1, z).IsSolid(Direction.down);
+//		bool downSolid = chunk.GetBlock(x, y-1, z).IsSolid(Direction.up);
 
 		bool northTer = chunk.GetBlock(x, y, z+1).isTerrain; 
 		bool southTer = chunk.GetBlock(x, y, z-1).isTerrain;

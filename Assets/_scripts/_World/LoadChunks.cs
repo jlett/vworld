@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 
 public class LoadChunks : MonoBehaviour {
 
@@ -84,7 +85,11 @@ public class LoadChunks : MonoBehaviour {
 			for(int x = pos.x - Chunk.chunkSize; x <= pos.x + Chunk.chunkSize; x += Chunk.chunkSize) {
 				for(int z = pos.z - Chunk.chunkSize; z <= pos.z + Chunk.chunkSize; z += Chunk.chunkSize) {
 					if(world.GetChunk(x, y, z) == null) {
-						world.CreateChunk(x, y, z);
+						Chunk c = new Chunk();
+						var thread = new Thread( () => {c = world.LoadChunk(x, y, z);});
+						thread.Start();
+						thread.Join();
+						world.CreateChunk(c);
 					}
 				}
 			}
@@ -103,6 +108,7 @@ public class LoadChunks : MonoBehaviour {
 		for(int i = 0; i < updateList.Count; i++) {
 			Chunk chunk = world.GetChunk(updateList[0].x, updateList[0].y, updateList[0].z);
 			if(chunk != null) {
+				chunk.container.Init();
 				chunk.update = true;
 			}
 			updateList.RemoveAt(0);

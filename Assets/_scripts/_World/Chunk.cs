@@ -1,11 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(MeshFilter))]
-[RequireComponent(typeof(MeshRenderer))]
-[RequireComponent(typeof(MeshCollider))]
-
-public class Chunk : MonoBehaviour {
+public class Chunk {
 	public Block[ , , ] blocks = new Block[chunkSize, chunkSize, chunkSize];
 	public static int chunkSize = 16;
 	public bool update = false;
@@ -14,21 +10,10 @@ public class Chunk : MonoBehaviour {
 
 	public bool rendered;
 
-	MeshFilter filter;
-	MeshCollider coll;
-
-	void Start() {
-		filter = gameObject.GetComponent<MeshFilter>();
-		coll = gameObject.GetComponent<MeshCollider>();
-	}
-
-	void Update() {
-		if(update) {
-			update = false;
-			UpdateChunk();
-		}
-	}
-
+	public MeshFilter filter;
+	public MeshCollider coll;
+	public ChunkContainer container;
+	
 	//returns the requested block at coords relative to chunk origin
 	public Block GetBlock(int x, int y, int z) {
 		if(CoordInRange(x) && CoordInRange(y) && CoordInRange(z)) {
@@ -59,7 +44,7 @@ public class Chunk : MonoBehaviour {
 	}
 
 	//updates the chunk based on it's contents
-	void UpdateChunk() {
+	public void UpdateChunk() {
 		rendered = true;
 
 		MeshData meshData = new MeshData();
