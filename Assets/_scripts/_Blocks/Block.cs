@@ -208,7 +208,7 @@ public class Block {
 		Vector2[] UVs = new Vector2[3];
 		Tile tilePos = GetTexturePosition(direction);
 		
-		UVs[0] = new Vector2(tileSize*tilePos.x + tileSize, tileSize*tilePos.y);
+		UVs[0] = new Vector2(tileSize*tilePos.x, tileSize*tilePos.y + tileSize);
 		UVs[1] = new Vector2(tileSize*tilePos.x + tileSize, tileSize*tilePos.y + tileSize);
 		UVs[2] = new Vector2(tileSize*tilePos.x, tileSize*tilePos.y);
 		

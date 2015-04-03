@@ -23,70 +23,46 @@ public class MeshData {
 	//verticies must listed in a CLOCKWISE order
 	//params are how many verts back to go (4 would be the vertex added 4 back)
 	public void AddQuadTriangles(int t0, int t1, int t2, int t3) {
-		triangles.Add(vertices.Count - (t0+1));
-		triangles.Add(vertices.Count - (t1+1));
-		triangles.Add(vertices.Count - (t2+1));
+		triangles.Add(vertices.Count - (t0));
+		triangles.Add(vertices.Count - (t1));
+		triangles.Add(vertices.Count - (t2));
 		
-		triangles.Add(vertices.Count - (t0+1));
-		triangles.Add(vertices.Count - (t2+1));
-		triangles.Add(vertices.Count - (t3+1));
-		
+		triangles.Add(vertices.Count - (t0));
+		triangles.Add(vertices.Count - (t2));
+		triangles.Add(vertices.Count - (t3));
+	
 		if(useRenderDataForCollision) {
-			colTriangles.Add(vertices.Count - (t0+1));
-			colTriangles.Add(vertices.Count - (t1+1));
-			colTriangles.Add(vertices.Count - (t2+1));
+			colTriangles.Add(vertices.Count - (t0));
+			colTriangles.Add(vertices.Count - (t1));
+			colTriangles.Add(vertices.Count - (t2));
 			
-			colTriangles.Add(vertices.Count - (t0+1));
-			colTriangles.Add(vertices.Count - (t2+1));
-			colTriangles.Add(vertices.Count - (t3+1));
+			colTriangles.Add(vertices.Count - (t0));
+			colTriangles.Add(vertices.Count - (t2));
+			colTriangles.Add(vertices.Count - (t3));
 		}
 	}
 
 	//make quad out of last 4 verticies
 	//verticies must added in a CLOCKWISE order
 	public void AddQuadTriangles() {
-		triangles.Add(vertices.Count - 4);
-		triangles.Add(vertices.Count - 3);
-		triangles.Add(vertices.Count - 2);
-		
-		triangles.Add(vertices.Count - 4);
-		triangles.Add(vertices.Count - 2);
-		triangles.Add(vertices.Count - 1);
-		
-		if(useRenderDataForCollision) {
-			colTriangles.Add(vertices.Count - 4);
-			colTriangles.Add(vertices.Count - 3);
-			colTriangles.Add(vertices.Count - 2);
-			
-			colTriangles.Add(vertices.Count - 4);
-			colTriangles.Add(vertices.Count - 2);
-			colTriangles.Add(vertices.Count - 1);
-		}
+		AddQuadTriangles(4, 3, 2, 1);
 	}
 	
 	public void AddTriangle(int t0, int t1, int t2) {
-		triangles.Add(vertices.Count - (t0+1));
-		triangles.Add(vertices.Count - (t1+1));
-		triangles.Add(vertices.Count - (t2+1));
+		triangles.Add(vertices.Count - (t0));
+		triangles.Add(vertices.Count - (t1));
+		triangles.Add(vertices.Count - (t2));
 		if(useRenderDataForCollision) {
-			colTriangles.Add(vertices.Count - (t0+1));
-			colTriangles.Add(vertices.Count - (t1+1));
-			colTriangles.Add(vertices.Count - (t2+1));
+			colTriangles.Add(vertices.Count - (t0));
+			colTriangles.Add(vertices.Count - (t1));
+			colTriangles.Add(vertices.Count - (t2));
 		}
 	}
 
 	//make tri out of last 3 verticies
 	//verticies must added in a CLOCKWISE order
 	public void AddTriangle() {
-		triangles.Add(vertices.Count - 3);
-		triangles.Add(vertices.Count - 2);
-		triangles.Add(vertices.Count - 1);
-		
-		if(useRenderDataForCollision) {
-			colTriangles.Add(vertices.Count - 3);
-			colTriangles.Add(vertices.Count - 2);
-			colTriangles.Add(vertices.Count - 1);
-		}
+		AddTriangle(3, 2, 1);
 	}
 
 	//collision stuff
@@ -95,40 +71,32 @@ public class MeshData {
 	}
 	
 	public void AddColQuadTriangles(int t0, int t1, int t2, int t3) {
-		colTriangles.Add(vertices.Count - (t0+1));
-		colTriangles.Add(vertices.Count - (t1+1));
-		colTriangles.Add(vertices.Count - (t2+1));
+		colTriangles.Add(vertices.Count - (t0));
+		colTriangles.Add(vertices.Count - (t1));
+		colTriangles.Add(vertices.Count - (t2));
 		
-		colTriangles.Add(vertices.Count - (t0+1));
-		colTriangles.Add(vertices.Count - (t2+1));
-		colTriangles.Add(vertices.Count - (t3+1));
+		colTriangles.Add(vertices.Count - (t0));
+		colTriangles.Add(vertices.Count - (t2));
+		colTriangles.Add(vertices.Count - (t3));
 	}
 
 	//make quad out of last 4 verticies
 	//verticies must added in a CLOCKWISE order
 	public void AddColQuadTriangles() {
-		colTriangles.Add(vertices.Count - 4);
-		colTriangles.Add(vertices.Count - 3);
-		colTriangles.Add(vertices.Count - 2);
-		
-		colTriangles.Add(vertices.Count - 4);
-		colTriangles.Add(vertices.Count - 2);
-		colTriangles.Add(vertices.Count - 1);
+		AddColQuadTriangles(4, 3, 2, 1);
 		
 	}
 	
 	public void AddColTriangle(int t0, int t1, int t2) {
-		colTriangles.Add(vertices.Count - (t0+1));
-		colTriangles.Add(vertices.Count - (t1+1));
-		colTriangles.Add(vertices.Count - (t2+1));
+		colTriangles.Add(vertices.Count - (t0));
+		colTriangles.Add(vertices.Count - (t1));
+		colTriangles.Add(vertices.Count - (t2));
 	}
 
 	//make tri out of last 3 verticies
 	//verticies must added in a CLOCKWISE order
 	public void AddColTriangle() {
-		colTriangles.Add(vertices.Count - 3);
-		colTriangles.Add(vertices.Count - 2);
-		colTriangles.Add(vertices.Count - 1);
+		AddColTriangle(3, 2, 1);
 	}
 
 }

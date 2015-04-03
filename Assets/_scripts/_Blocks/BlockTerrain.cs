@@ -30,31 +30,32 @@ public class BlockTerrain : Block {
 		
 		if(!upSolid && downSolid) {
 			if(cardnalsSolid == 3) { 																				//case 1 (in notes)
-//				meshData = FaceDataDown(chunk, x, y, z, meshData);
 				if(!southSolid) {
-//					meshData = FaceDataNorth(chunk, x, y, z, meshData);
-//					meshData = AddFaceTri(chunk, x, y, z, new int[3] {1, 7, 2}, Direction.west, meshData);
-//					meshData = AddFaceTri(chunk, x, y, z, new int[3] {0, 3, 6}, Direction.east, meshData);
 					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {1, 0, 6, 7}, Direction.up, meshData);
-				} else if(!northSolid) {
-//					meshData = FaceDataSouth(chunk, x, y, z, meshData);
-//					meshData = AddFaceTri(chunk, x, y, z, new int[3] {4, 7, 2}, Direction.west, meshData);
-//					meshData = AddFaceTri(chunk, x, y, z, new int[3] {5, 6, 3}, Direction.east, meshData);
+				} else if(!northSolid) {;
 					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {5, 4, 2, 3}, Direction.up, meshData);
 				} else if(!eastSolid) {
-//					meshData = FaceDataWest(chunk, x, y, z, meshData);
-//					meshData = AddFaceTri(chunk, x, y, z, new int[3] {4, 6, 7}, Direction.south, meshData);
-//					meshData = AddFaceTri(chunk, x, y, z, new int[3] {1, 2, 3}, Direction.north, meshData);
 					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {1, 3, 6, 4}, Direction.up, meshData);
 				} else if(!westSolid) {
-//					meshData = FaceDataEast(chunk, x, y, z, meshData);
-//					meshData = AddFaceTri(chunk, x, y, z, new int[3] {7, 5, 6}, Direction.south, meshData);
-//					meshData = AddFaceTri(chunk, x, y, z, new int[3] {0, 2, 3}, Direction.north, meshData);
 					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {0, 5, 7, 2}, Direction.up, meshData);
 				}
-			} else if(cardnalsSolid == 2) {
-				if((northSolid || southSolid) && (eastSolid || westSolid)) {										//case 2
-					meshData = base.BlockData(chunk, x, y, z, meshData);
+			} else if(cardnalsSolid == 2) {																			//case 2
+				if(northSolid) {
+					if(eastSolid) {
+						meshData = AddFaceTri(chunk, x, y, z, new int[3] {0, 7, 2}, Direction.up, meshData);
+						meshData = AddFaceTri(chunk, x, y, z, new int[3] {0, 6, 7}, Direction.up, meshData);
+					} else if(westSolid) {
+						meshData = AddFaceTri(chunk, x, y, z, new int[3] {1, 6, 7}, Direction.up, meshData);
+						meshData = AddFaceTri(chunk, x, y, z, new int[3] {1, 3, 6}, Direction.up, meshData);
+					}
+				} else if(southSolid) {
+					if(eastSolid) {
+						meshData = AddFaceTri(chunk, x, y, z, new int[3] {5, 2, 3}, Direction.up, meshData);
+						meshData = AddFaceTri(chunk, x, y, z, new int[3] {5, 7, 2}, Direction.up, meshData);
+					} else if(westSolid) {
+						meshData = AddFaceTri(chunk, x, y, z, new int[3] {4, 3, 6}, Direction.up, meshData);
+						meshData = AddFaceTri(chunk, x, y, z, new int[3] {4, 2, 3}, Direction.up, meshData);
+					}
 				}
 			} else { //backup plan!
 				meshData = base.BlockData(chunk, x, y, z, meshData);
