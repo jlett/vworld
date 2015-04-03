@@ -41,6 +41,8 @@ public class BlockAir : Block {
 			numTer++;
 
 		//note that they are not if else, just if, so that multiple cases are all handled in this long expression
+		//the boolean expressions for the side tris could be simplified to use one less chunk.getblock call (instead of !((A && B) || (C && B)), make it (!B || (!A && !C))
+		//however, it would be a lot of rewriting things and the performance increase would be negligable I'd assume
 		if(numTer > 1 && numTer < 5) {
 			if(northTer) {																													//four sub cases removed cause they were ugly
 				if(downTer) {
@@ -122,6 +124,34 @@ public class BlockAir : Block {
 						meshData = AddFaceTri(chunk, x, y, z, new int[3] {15, 4, 12}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
 					}
 				}
+			}
+		}
+		if(downTer) {
+			if(chunk.GetBlock(x-1, y, z+1).isTerrain && chunk.GetBlock(x-1, y-1, z).isTerrain && chunk.GetBlock(x, y-1, z+1).isTerrain) {
+				meshData = AddFaceTri(chunk, x, y, z, new int[3] {19, 9, 10}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+			}
+			if(chunk.GetBlock(x+1, y, z+1).isTerrain && chunk.GetBlock(x+1, y-1, z).isTerrain && chunk.GetBlock(x, y-1, z+1).isTerrain) {
+				meshData = AddFaceTri(chunk, x, y, z, new int[3] {11, 18, 10}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+			}
+			if(chunk.GetBlock(x+1, y, z-1).isTerrain && chunk.GetBlock(x+1, y-1, z).isTerrain && chunk.GetBlock(x, y-1, z-1).isTerrain) {
+				meshData = AddFaceTri(chunk, x, y, z, new int[3] {13, 14, 18}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+			}
+			if(chunk.GetBlock(x-1, y, z-1).isTerrain && chunk.GetBlock(x-1, y-1, z).isTerrain && chunk.GetBlock(x, y-1, z-1).isTerrain) {
+				meshData = AddFaceTri(chunk, x, y, z, new int[3] {15, 19, 14}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+			}
+		}
+		if(upTer) {
+			if(chunk.GetBlock(x-1, y, z+1).isTerrain && chunk.GetBlock(x-1, y+1, z).isTerrain && chunk.GetBlock(x, y+1, z+1).isTerrain) {
+				meshData = AddFaceTri(chunk, x, y, z, new int[3] {16, 8, 9}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+			}
+			if(chunk.GetBlock(x+1, y, z+1).isTerrain && chunk.GetBlock(x+1, y+1, z).isTerrain && chunk.GetBlock(x, y+1, z+1).isTerrain) {
+				meshData = AddFaceTri(chunk, x, y, z, new int[3] {17, 11, 8}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+			}
+			if(chunk.GetBlock(x+1, y, z-1).isTerrain && chunk.GetBlock(x+1, y+1, z).isTerrain && chunk.GetBlock(x, y+1, z-1).isTerrain) {
+				meshData = AddFaceTri(chunk, x, y, z, new int[3] {17, 12, 13}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+			}
+			if(chunk.GetBlock(x-1, y, z-1).isTerrain && chunk.GetBlock(x-1, y+1, z).isTerrain && chunk.GetBlock(x, y+1, z-1).isTerrain) {
+				meshData = AddFaceTri(chunk, x, y, z, new int[3] {16, 12, 15}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
 			}
 		}
 		return meshData;
