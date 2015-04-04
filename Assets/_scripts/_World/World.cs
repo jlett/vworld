@@ -24,7 +24,7 @@ public class World : MonoBehaviour {
 		newChunk.SetBlocksUnmodified();
 		
 		//load changed blocks
-		Serialization.Load(newChunk);
+		Serialization.LoadChunk(newChunk);
 
 		return newChunk;
 	}

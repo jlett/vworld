@@ -17,18 +17,18 @@ public class Serialization : MonoBehaviour {
 		return saveLocation;
 	}
 
-	public static string FileName(WorldPos chunkLoc) {
+	public static string ChunkFileName(WorldPos chunkLoc) {
 		string fileName = chunkLoc.x + "," + chunkLoc.y + "," + chunkLoc.z + ".bin";
 		return fileName;
 	}
 
 	public static void SaveChunk(Chunk chunk) {
-		Save save = new Save(chunk);
+		ChunkSave save = new ChunkSave(chunk);
 		if(save.blocks.Count == 0)
 			return;
 
 		string saveFile = SaveLocation(chunk.world.worldName);
-		saveFile += FileName(chunk.pos);
+		saveFile += ChunkFileName(chunk.pos);
 
 		IFormatter form = new BinaryFormatter();
 		Stream stream = new FileStream(saveFile, FileMode.Create, FileAccess.Write, FileShare.None);
@@ -36,9 +36,9 @@ public class Serialization : MonoBehaviour {
 		stream.Close();
 	}
 
-	public static bool Load(Chunk chunk) {
+	public static bool LoadChunk(Chunk chunk) {
 		string saveFile = SaveLocation(chunk.world.worldName);
-		saveFile += FileName(chunk.pos);
+		saveFile += ChunkFileName(chunk.pos);
 
 		if(!File.Exists(saveFile))
 			return false;
@@ -46,7 +46,7 @@ public class Serialization : MonoBehaviour {
 		IFormatter form = new BinaryFormatter();
 		FileStream stream = new FileStream(saveFile, FileMode.Open);
 
-		Save save = (Save)form.Deserialize(stream);
+		ChunkSave save = (ChunkSave)form.Deserialize(stream);
 		foreach(var block in save.blocks) {
 			chunk.blocks[block.Key.x, block.Key.y, block.Key.z] = block.Value;
 		}

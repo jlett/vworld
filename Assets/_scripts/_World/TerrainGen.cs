@@ -17,7 +17,7 @@ public class TerrainGen {
 	//dirt layer
 	float dirtBaseHeight = 2;
 	float dirtNoise = 0.04f;
-	float dirtNoiseHeight = 3;
+	float dirtNoiseHeight = 2;
 
 	public Chunk ChunkGen(Chunk chunk) {
 		for(int x = chunk.pos.x; x < chunk.pos.x + Chunk.chunkSize; x++) {//using world coords
@@ -30,13 +30,13 @@ public class TerrainGen {
 
 	public Chunk ChunkColumnGen(Chunk chunk, int x, int z) {
 		int stoneHeight = Mathf.FloorToInt(stoneBaseHeight);													//set base height
-		stoneHeight += GetNoise(x, 0, z, stoneMountainFrequency, Mathf.FloorToInt(stoneMountainHeight), 0.5f);		//add mountain noise
+		stoneHeight += GetNoise(x, 0, z, stoneMountainFrequency, Mathf.FloorToInt(stoneMountainHeight), 0.6f);		//add mountain noise
 		if(stoneHeight < stoneMinHeight)
 			stoneHeight = Mathf.FloorToInt(stoneMinHeight);														//raise all stone up to min height (if needed)
 		stoneHeight += GetNoise(x, 0, z, stoneBaseNoise, Mathf.FloorToInt(stoneBaseNoiseHeight), 0.2f);				//add base noise
 
 		int dirtHeight = stoneHeight + Mathf.FloorToInt(dirtBaseHeight);										//set base dirt height
-		dirtHeight += GetNoise(x, 100, z, dirtNoise, Mathf.FloorToInt(dirtNoiseHeight), 0.1f);						//add noise to dirt height
+		dirtHeight += GetNoise(x, 100, z, dirtNoise, Mathf.FloorToInt(dirtNoiseHeight), 0.2f);						//add noise to dirt height
 
 		int grassHeight = dirtHeight + 1;																		//add layer of grass on top
 

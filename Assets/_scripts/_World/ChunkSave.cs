@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System;
 
 [Serializable]
-public class Save {
+public class ChunkSave {
 	public Dictionary<WorldPos, Block> blocks = new Dictionary<WorldPos, Block>();
 
-	public Save(Chunk chunk) {
+	public ChunkSave(Chunk chunk) {
 		for(int x = 0; x < Chunk.chunkSize; x++) {
 			for(int y = 0; y < Chunk.chunkSize; y++) {
 				for(int z = 0; z < Chunk.chunkSize; z++) {

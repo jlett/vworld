@@ -11,6 +11,7 @@ public class Block {
 	const float tileSize = 0.25f;//1 divided by number of tiles per side (aka 0.25 on a 4x4 texture)
 
 	public bool isTerrain = false;//should we pseudo marching cubes the block
+	public bool isSmoothShaded = false;//should we manually calc the normals to make the block smoooooth
 	public bool changed = true;
 
 	//base constructor
@@ -140,58 +141,7 @@ public class Block {
 	 * dir = which face to texture with
 	 */
 	protected MeshData AddFaceTri(Chunk chunk, int x, int y, int z, int[] t, Direction dir, MeshData meshData) {
-		if(t.Length != 3) {
-			Debug.LogError("3 points are required for a tri... idiot");
-		}
-		for(int i = 0; i < 3; i++) {
-			if(t[i] == 0) {
-				meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f));
-			} else if(t[i] == 1) {
-				meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z + 0.5f));
-			} else if(t[i] == 2) {
-				meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z + 0.5f));
-			} else if(t[i] == 3) {
-				meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f));
-			} else if(t[i] == 4) {
-				meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f));
-			} else if(t[i] == 5) {
-				meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z - 0.5f));
-			} else if(t[i] == 6) {
-				meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f));
-			} else if(t[i] == 7) {
-				meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f));
-			} else if(t[i] == 8) {//
-				meshData.AddVertex(new Vector3(x, y + 0.5f, z + 0.5f));
-			} else if(t[i] == 9) {
-				meshData.AddVertex(new Vector3(x - 0.5f, y, z + 0.5f));
-			} else if(t[i] == 10) {
-				meshData.AddVertex(new Vector3(x, y - 0.5f, z + 0.5f));
-			} else if(t[i] == 11) {
-				meshData.AddVertex(new Vector3(x + 0.5f, y, z + 0.5f));
-			} else if(t[i] == 12) {
-				meshData.AddVertex(new Vector3(x, y + 0.5f, z - 0.5f));
-			} else if(t[i] == 13) {
-				meshData.AddVertex(new Vector3(x + 0.5f, y, z - 0.5f));
-			} else if(t[i] == 14) {
-				meshData.AddVertex(new Vector3(x, y - 0.5f, z - 0.5f));
-			} else if(t[i] == 15) {
-				meshData.AddVertex(new Vector3(x - 0.5f, y, z - 0.5f));
-			} else if(t[i] == 16) {
-				meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z));
-			} else if(t[i] == 17) {
-				meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z));
-			} else if(t[i] == 18) {
-				meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z));
-			} else if(t[i] == 19) {
-				meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z));
-			} else {
-				Debug.LogError("AddFaceTri(...) vertex out of bounds: " + t[i]);
-			}
-		}
-		meshData.AddTriangle();
-		
-		meshData.uv.AddRange(GetTriUVs(dir));
-		return meshData;
+		return AddFaceTri(chunk, x, y, z, t, GetTexturePosition(dir), meshData);
 	}
 
 	protected MeshData AddFaceTri(Chunk chunk, int x, int y, int z, int[] t, Tile tile, MeshData meshData) {
@@ -305,58 +255,7 @@ public class Block {
 	}
 
 	protected MeshData AddFaceQuad(Chunk chunk, int x, int y, int z, int[] t, Direction dir, MeshData meshData) {
-		if(t.Length != 4) {
-			Debug.LogError("4 points are required for a quad... idiot");
-		}
-		for(int i = 0; i < 4; i++) {
-			if(t[i] == 0) {
-				meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f));
-			} else if(t[i] == 1) {
-				meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z + 0.5f));
-			} else if(t[i] == 2) {
-				meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z + 0.5f));
-			} else if(t[i] == 3) {
-				meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f));
-			} else if(t[i] == 4) {
-				meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f));
-			} else if(t[i] == 5) {
-				meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z - 0.5f));
-			} else if(t[i] == 6) {
-				meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f));
-			} else if(t[i] == 7) {
-				meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f));
-			} else if(t[i] == 8) {//
-				meshData.AddVertex(new Vector3(x, y + 0.5f, z + 0.5f));
-			} else if(t[i] == 9) {
-				meshData.AddVertex(new Vector3(x - 0.5f, y, z + 0.5f));
-			} else if(t[i] == 10) {
-				meshData.AddVertex(new Vector3(x, y - 0.5f, z + 0.5f));
-			} else if(t[i] == 11) {
-				meshData.AddVertex(new Vector3(x + 0.5f, y, z + 0.5f));
-			} else if(t[i] == 12) {
-				meshData.AddVertex(new Vector3(x, y + 0.5f, z - 0.5f));
-			} else if(t[i] == 13) {
-				meshData.AddVertex(new Vector3(x + 0.5f, y, z - 0.5f));
-			} else if(t[i] == 14) {
-				meshData.AddVertex(new Vector3(x, y - 0.5f, z - 0.5f));
-			} else if(t[i] == 15) {
-				meshData.AddVertex(new Vector3(x - 0.5f, y, z - 0.5f));
-			} else if(t[i] == 16) {
-				meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z));
-			} else if(t[i] == 17) {
-				meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z));
-			} else if(t[i] == 18) {
-				meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z));
-			} else if(t[i] == 19) {
-				meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z));
-			} else {
-				Debug.LogError("AddFaceQuad(...) vertex out of bounds: " + t[i]);
-			}
-		}
-		meshData.AddQuadTriangles();
-		
-		meshData.uv.AddRange(GetQuadUVs(dir));
-		return meshData;
+		return AddFaceQuad(chunk, x, y, z, t, GetTexturePosition(dir), meshData);
 	}
 
 	//to be overridden by special case blocks
@@ -373,12 +272,12 @@ public class Block {
 		return tile;
 	}
 
-	public virtual Vector2[] GetQuadUVs(Direction direction) {
-		return GetQuadUVs(GetTexturePosition(direction));
+	public virtual Vector2[] GetQuadUVs(Direction dir) {
+		return GetQuadUVs(GetTexturePosition(dir));
 	}
-
-	public virtual Vector2[] GetTriUVs(Direction direction) {
-		return GetTriUVs(GetTexturePosition(direction));
+	
+	public virtual Vector2[] GetTriUVs(Direction dir) {
+		return GetTriUVs(GetTexturePosition(dir));
 	}
 
 	public virtual Vector2[] GetQuadUVs(Tile tilePos) {
