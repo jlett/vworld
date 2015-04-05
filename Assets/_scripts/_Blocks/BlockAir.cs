@@ -127,30 +127,30 @@ public class BlockAir : Block {
 			}
 		}
 		if(downTer) {
-			if(chunk.GetBlock(x-1, y, z+1).isTerrain && chunk.GetBlock(x-1, y-1, z).isTerrain && chunk.GetBlock(x, y-1, z+1).isTerrain) {
+			if(!westSolid && !northSolid && chunk.GetBlock(x-1, y, z+1).isTerrain && chunk.GetBlock(x-1, y-1, z).isTerrain && chunk.GetBlock(x, y-1, z+1).isTerrain) {
 				meshData = AddFaceTri(chunk, x, y, z, new int[3] {19, 9, 10}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
 			}
-			if(chunk.GetBlock(x+1, y, z+1).isTerrain && chunk.GetBlock(x+1, y-1, z).isTerrain && chunk.GetBlock(x, y-1, z+1).isTerrain) {
+			if(!eastSolid && !northSolid && chunk.GetBlock(x+1, y, z+1).isTerrain && chunk.GetBlock(x+1, y-1, z).isTerrain && chunk.GetBlock(x, y-1, z+1).isTerrain) {
 				meshData = AddFaceTri(chunk, x, y, z, new int[3] {11, 18, 10}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
 			}
-			if(chunk.GetBlock(x+1, y, z-1).isTerrain && chunk.GetBlock(x+1, y-1, z).isTerrain && chunk.GetBlock(x, y-1, z-1).isTerrain) {
+			if(!eastSolid && !southSolid && chunk.GetBlock(x+1, y, z-1).isTerrain && chunk.GetBlock(x+1, y-1, z).isTerrain && chunk.GetBlock(x, y-1, z-1).isTerrain) {
 				meshData = AddFaceTri(chunk, x, y, z, new int[3] {13, 14, 18}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
 			}
-			if(chunk.GetBlock(x-1, y, z-1).isTerrain && chunk.GetBlock(x-1, y-1, z).isTerrain && chunk.GetBlock(x, y-1, z-1).isTerrain) {
+			if(!westSolid && !southSolid && chunk.GetBlock(x-1, y, z-1).isTerrain && chunk.GetBlock(x-1, y-1, z).isTerrain && chunk.GetBlock(x, y-1, z-1).isTerrain) {
 				meshData = AddFaceTri(chunk, x, y, z, new int[3] {15, 19, 14}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
 			}
 		}
 		if(upTer) {
-			if(chunk.GetBlock(x-1, y, z+1).isTerrain && chunk.GetBlock(x-1, y+1, z).isTerrain && chunk.GetBlock(x, y+1, z+1).isTerrain) {
+			if(!westSolid && !northSolid && chunk.GetBlock(x-1, y, z+1).isTerrain && chunk.GetBlock(x-1, y+1, z).isTerrain && chunk.GetBlock(x, y+1, z+1).isTerrain) {
 				meshData = AddFaceTri(chunk, x, y, z, new int[3] {16, 8, 9}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
 			}
-			if(chunk.GetBlock(x+1, y, z+1).isTerrain && chunk.GetBlock(x+1, y+1, z).isTerrain && chunk.GetBlock(x, y+1, z+1).isTerrain) {
+			if(!eastSolid && !northSolid && chunk.GetBlock(x+1, y, z+1).isTerrain && chunk.GetBlock(x+1, y+1, z).isTerrain && chunk.GetBlock(x, y+1, z+1).isTerrain) {
 				meshData = AddFaceTri(chunk, x, y, z, new int[3] {17, 11, 8}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
 			}
-			if(chunk.GetBlock(x+1, y, z-1).isTerrain && chunk.GetBlock(x+1, y+1, z).isTerrain && chunk.GetBlock(x, y+1, z-1).isTerrain) {
+			if(!eastSolid && !southSolid && chunk.GetBlock(x+1, y, z-1).isTerrain && chunk.GetBlock(x+1, y+1, z).isTerrain && chunk.GetBlock(x, y+1, z-1).isTerrain) {
 				meshData = AddFaceTri(chunk, x, y, z, new int[3] {17, 12, 13}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
 			}
-			if(chunk.GetBlock(x-1, y, z-1).isTerrain && chunk.GetBlock(x-1, y+1, z).isTerrain && chunk.GetBlock(x, y+1, z-1).isTerrain) {
+			if(!westSolid && !southSolid && chunk.GetBlock(x-1, y, z-1).isTerrain && chunk.GetBlock(x-1, y+1, z).isTerrain && chunk.GetBlock(x, y+1, z-1).isTerrain) {
 				meshData = AddFaceTri(chunk, x, y, z, new int[3] {16, 12, 15}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
 			}
 		}
