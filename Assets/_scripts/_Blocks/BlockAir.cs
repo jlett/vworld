@@ -154,6 +154,118 @@ public class BlockAir : Block {
 				meshData = AddFaceTri(chunk, x, y, z, new int[3] {16, 12, 15}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
 			}
 		}
+
+//		if(numTer > 1 && numTer < 5) {
+//			if(northTer) {																													//four sub cases removed cause they were ugly
+//				if(downTer) {
+//					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {1, 0, 18, 19}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//					if(!eastSolid && !((chunk.GetBlock(x+1, y-1, z+1).isTerrain && chunk.GetBlock(x+1, y-1, z).isTerrain) || (chunk.GetBlock(x+1, y, z+1).isTerrain && chunk.GetBlock(x+1, y-1, z).isTerrain))) {
+//						meshData = AddFaceTri(chunk, x, y, z, new int[3] {0, 3, 18}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//					}
+//					if(!westSolid && !((chunk.GetBlock(x-1, y-1, z+1).isTerrain && chunk.GetBlock(x-1, y-1, z).isTerrain) || (chunk.GetBlock(x-1, y, z+1).isTerrain && chunk.GetBlock(x-1, y-1, z).isTerrain))) {
+//						meshData = AddFaceTri(chunk, x, y, z, new int[3] {1, 19, 2}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//					}
+//				} if(upTer) {
+//					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {16, 17, 3, 2}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//					if(!eastSolid && !((chunk.GetBlock(x+1, y+1, z+1).isTerrain && chunk.GetBlock(x+1, y+1, z).isTerrain) || (chunk.GetBlock(x+1, y, z+1).isTerrain && chunk.GetBlock(x+1, y+1, z).isTerrain))) {
+//						meshData = AddFaceTri(chunk, x, y, z, new int[3] {17, 0, 3}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//					}
+//					if(!westSolid && !((chunk.GetBlock(x-1, y+1, z+1).isTerrain && chunk.GetBlock(x-1, y+1, z).isTerrain) || (chunk.GetBlock(x-1, y, z+1).isTerrain && chunk.GetBlock(x-1, y+1, z).isTerrain))) {
+//						meshData = AddFaceTri(chunk, x, y, z, new int[3] {1, 16, 2}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//					}
+//				} /*else if(eastTer) {
+//					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {8, 17, 18, 10}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//				} else if(westTer) {
+//					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {8, 10, 19, 16}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//				}*/
+//			} if(southTer) {
+//				if(downTer) {
+//					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {5, 4, 19, 18}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//					if(!eastSolid && !((chunk.GetBlock(x+1, y-1, z-1).isTerrain && chunk.GetBlock(x+1, y-1, z).isTerrain) || (chunk.GetBlock(x+1, y, z-1).isTerrain && chunk.GetBlock(x+1, y-1, z).isTerrain))) {
+//						meshData = AddFaceTri(chunk, x, y, z, new int[3] {5, 18, 6}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//					}
+//					if(!westSolid && !((chunk.GetBlock(x-1, y-1, z-1).isTerrain && chunk.GetBlock(x-1, y-1, z).isTerrain) || (chunk.GetBlock(x-1, y, z-1).isTerrain && chunk.GetBlock(x-1, y-1, z).isTerrain))) {
+//						meshData = AddFaceTri(chunk, x, y, z, new int[3] {4, 7, 19}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//					}
+//				} if(upTer) {
+//					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {17, 16, 7, 6}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//					if(!eastSolid && !((chunk.GetBlock(x+1, y+1, z-1).isTerrain && chunk.GetBlock(x+1, y+1, z).isTerrain) || (chunk.GetBlock(x+1, y, z-1).isTerrain && chunk.GetBlock(x+1, y+1, z).isTerrain))) {
+//						meshData = AddFaceTri(chunk, x, y, z, new int[3] {6, 5, 17}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//					}
+//					if(!westSolid && !((chunk.GetBlock(x-1, y+1, z-1).isTerrain && chunk.GetBlock(x-1, y+1, z).isTerrain) || (chunk.GetBlock(x-1, y, z-1).isTerrain && chunk.GetBlock(x-1, y+1, z).isTerrain))) {
+//						meshData = AddFaceTri(chunk, x, y, z, new int[3] {16, 4, 7}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//					}
+//				} /*else if(eastTer) {
+//					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {12, 14, 18, 17}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//				} else if(westTer) {
+//					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {12, 16, 19, 14}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//				}*/
+//			} if(downTer) {
+//				if(eastTer) {
+//					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {0, 5, 14, 10}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//					if(!northSolid && !((chunk.GetBlock(x+1, y-1, z+1).isTerrain && chunk.GetBlock(x, y-1, z+1).isTerrain) || (chunk.GetBlock(x+1, y, z+1).isTerrain && chunk.GetBlock(x, y-1, z+1).isTerrain))) {
+//						meshData = AddFaceTri(chunk, x, y, z, new int[3] {0, 10, 3}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);//
+//					}
+//					if(!southSolid && !((chunk.GetBlock(x+1, y-1, z-1).isTerrain && chunk.GetBlock(x, y-1, z-1).isTerrain) || (chunk.GetBlock(x+1, y, z-1).isTerrain && chunk.GetBlock(x, y-1, z-1).isTerrain))) {
+//						meshData = AddFaceTri(chunk, x, y, z, new int[3] {14, 5, 6}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//					}
+//				} if(westTer) {
+//					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {4, 1, 10, 14}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//					if(!northSolid && !((chunk.GetBlock(x-1, y-1, z+1).isTerrain && chunk.GetBlock(x, y-1, z+1).isTerrain) || (chunk.GetBlock(x-1, y, z+1).isTerrain && chunk.GetBlock(x, y-1, z+1).isTerrain))) {
+//						meshData = AddFaceTri(chunk, x, y, z, new int[3] {10, 1, 2}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//					}
+//					if(!southSolid && !((chunk.GetBlock(x-1, y-1, z-1).isTerrain && chunk.GetBlock(x, y-1, z-1).isTerrain) || (chunk.GetBlock(x-1, y, z-1).isTerrain && chunk.GetBlock(x, y-1, z-1).isTerrain))) {
+//						meshData = AddFaceTri(chunk, x, y, z, new int[3] {7, 4, 14}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//					}
+//				}
+//			} if(upTer) {
+//				if(eastTer) {
+//					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {8, 12, 6, 3}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//					if(!northSolid && !((chunk.GetBlock(x+1, y+1, z+1).isTerrain && chunk.GetBlock(x, y+1, z+1).isTerrain) || (chunk.GetBlock(x+1, y, z+1).isTerrain && chunk.GetBlock(x, y+1, z+1).isTerrain))) {
+//						meshData = AddFaceTri(chunk, x, y, z, new int[3] {0, 8, 3}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//					}
+//					if(!southSolid && !((chunk.GetBlock(x+1, y+1, z-1).isTerrain && chunk.GetBlock(x, y+1, z-1).isTerrain) || (chunk.GetBlock(x+1, y, z-1).isTerrain && chunk.GetBlock(x, y+1, z-1).isTerrain))) {
+//						meshData = AddFaceTri(chunk, x, y, z, new int[3] {12, 5, 6}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//					}
+//				} if(westTer) {
+//					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {12, 8, 2, 7}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//					if(!northSolid && !((chunk.GetBlock(x-1, y+1, z+1).isTerrain && chunk.GetBlock(x, y+1, z+1).isTerrain) || (chunk.GetBlock(x-1, y, z+1).isTerrain && chunk.GetBlock(x, y+1, z+1).isTerrain))) {
+//						meshData = AddFaceTri(chunk, x, y, z, new int[3] {8, 1, 2}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//					}
+//					if(!southSolid && !((chunk.GetBlock(x-1, y+1, z-1).isTerrain && chunk.GetBlock(x, y+1, z-1).isTerrain) || (chunk.GetBlock(x-1, y, z-1).isTerrain && chunk.GetBlock(x, y+1, z-1).isTerrain))) {
+//						meshData = AddFaceTri(chunk, x, y, z, new int[3] {7, 4, 12}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//					}
+//				}
+//			}
+//		}
+//		if(downTer) {
+//			if(!westSolid && !northSolid && chunk.GetBlock(x-1, y, z+1).isTerrain && chunk.GetBlock(x-1, y-1, z).isTerrain && chunk.GetBlock(x, y-1, z+1).isTerrain) {
+//				meshData = AddFaceTri(chunk, x, y, z, new int[3] {19, 1, 10}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//			}
+//			if(!eastSolid && !northSolid && chunk.GetBlock(x+1, y, z+1).isTerrain && chunk.GetBlock(x+1, y-1, z).isTerrain && chunk.GetBlock(x, y-1, z+1).isTerrain) {
+//				meshData = AddFaceTri(chunk, x, y, z, new int[3] {0, 18, 10}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//			}
+//			if(!eastSolid && !southSolid && chunk.GetBlock(x+1, y, z-1).isTerrain && chunk.GetBlock(x+1, y-1, z).isTerrain && chunk.GetBlock(x, y-1, z-1).isTerrain) {
+//				meshData = AddFaceTri(chunk, x, y, z, new int[3] {5, 14, 18}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//			}
+//			if(!westSolid && !southSolid && chunk.GetBlock(x-1, y, z-1).isTerrain && chunk.GetBlock(x-1, y-1, z).isTerrain && chunk.GetBlock(x, y-1, z-1).isTerrain) {
+//				meshData = AddFaceTri(chunk, x, y, z, new int[3] {4, 19, 14}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//			}
+//		}
+//		if(upTer) {
+//			if(!westSolid && !northSolid && chunk.GetBlock(x-1, y, z+1).isTerrain && chunk.GetBlock(x-1, y+1, z).isTerrain && chunk.GetBlock(x, y+1, z+1).isTerrain) {
+//				meshData = AddFaceTri(chunk, x, y, z, new int[3] {16, 8, 2}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//			}
+//			if(!eastSolid && !northSolid && chunk.GetBlock(x+1, y, z+1).isTerrain && chunk.GetBlock(x+1, y+1, z).isTerrain && chunk.GetBlock(x, y+1, z+1).isTerrain) {
+//				meshData = AddFaceTri(chunk, x, y, z, new int[3] {17, 3, 8}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//			}
+//			if(!eastSolid && !southSolid && chunk.GetBlock(x+1, y, z-1).isTerrain && chunk.GetBlock(x+1, y+1, z).isTerrain && chunk.GetBlock(x, y+1, z-1).isTerrain) {
+//				meshData = AddFaceTri(chunk, x, y, z, new int[3] {17, 12, 6}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//			}
+//			if(!westSolid && !southSolid && chunk.GetBlock(x-1, y, z-1).isTerrain && chunk.GetBlock(x-1, y+1, z).isTerrain && chunk.GetBlock(x, y+1, z-1).isTerrain) {
+//				meshData = AddFaceTri(chunk, x, y, z, new int[3] {16, 12, 7}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
+//			}
+//		}
 		return meshData;
 	}
 	
