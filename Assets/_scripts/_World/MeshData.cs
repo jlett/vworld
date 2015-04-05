@@ -9,7 +9,10 @@ public class MeshData {
 	
 	public List<Vector3> colVertices = new List<Vector3>();
 	public List<int> colTriangles = new List<int>();
+
+	public List<Vector3> normals = new List<Vector3>();
 	public bool useRenderDataForCollision = false;
+	public bool useCustomNormals = false;
 	
 	public MeshData() {}
 
@@ -97,6 +100,10 @@ public class MeshData {
 	//verticies must added in a CLOCKWISE order
 	public void AddColTriangle() {
 		AddColTriangle(3, 2, 1);
+	}
+
+	public void AddNormal(Vector3 v) {
+		normals.Add(v.normalized);
 	}
 
 }

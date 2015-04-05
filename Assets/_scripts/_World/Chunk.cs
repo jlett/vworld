@@ -67,13 +67,18 @@ public class Chunk {
 		filter.mesh.triangles = meshData.triangles.ToArray();
 
 		filter.mesh.uv = meshData.uv.ToArray();
-		filter.mesh.RecalculateNormals();
+
+		if(meshData.useCustomNormals)
+			filter.mesh.normals = meshData.normals.ToArray();
+		else
+			filter.mesh.RecalculateNormals();
 
 		coll.sharedMesh = null;
 		Mesh mesh = new Mesh();
 		mesh.vertices = meshData.colVertices.ToArray();
 		mesh.triangles = meshData.colTriangles.ToArray();
 		mesh.RecalculateNormals();
+
 		coll.sharedMesh = mesh;
 	}
 }

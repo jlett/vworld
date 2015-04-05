@@ -21,6 +21,10 @@ public class Block {
 
 	public virtual MeshData BlockData(Chunk chunk, int x, int y, int z, MeshData meshData) {
 		meshData.useRenderDataForCollision = true;
+
+		if(isSmoothShaded)
+			meshData.useCustomNormals = true;
+
 		bool northSolid = chunk.GetBlock(x, y, z+1).IsSolid(Direction.south); 
 		bool southSolid = chunk.GetBlock(x, y, z-1).IsSolid(Direction.north);
 		bool eastSolid = chunk.GetBlock(x+1, y, z).IsSolid(Direction.west);
@@ -49,69 +53,80 @@ public class Block {
 	}
 
 	protected virtual MeshData FaceDataNorth(Chunk chunk, int x, int y, int z, MeshData meshData) {
-		meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f));
-		meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f));
-		meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z + 0.5f));
-		meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z + 0.5f));
-		
-		meshData.AddQuadTriangles();
-		meshData.uv.AddRange(GetQuadUVs(Direction.north));
+		meshData = AddFaceQuad(chunk, x, y, z, new int[4] {3, 0, 1, 2}, Direction.north, meshData);
 
+		if(isSmoothShaded) {
+			meshData.AddNormal(new Vector3(1, -1, 1));
+			meshData.AddNormal(new Vector3(1, 1, 1));
+			meshData.AddNormal(new Vector3(-1, 1, 1));
+			meshData.AddNormal(new Vector3(-1, -1, 1));
+		}
+		
 		return meshData;
 	}
 
 	protected virtual MeshData FaceDataSouth(Chunk chunk, int x, int y, int z, MeshData meshData) {
-		meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f));
-		meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f));
-		meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z - 0.5f));
-		meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f));
-		
-		meshData.AddQuadTriangles();
-		meshData.uv.AddRange(GetQuadUVs(Direction.south));
+		meshData = AddFaceQuad(chunk, x, y, z, new int[4] {7, 4, 5, 6}, Direction.south, meshData);
+
+		if(isSmoothShaded) {
+			meshData.AddNormal(new Vector3(-1, -1, -1));
+			meshData.AddNormal(new Vector3(-1, 1, -1));
+			meshData.AddNormal(new Vector3(1, 1, -1));
+			meshData.AddNormal(new Vector3(1, -1, -1));
+		}
+
 		return meshData;
 	}
 
 	protected virtual MeshData FaceDataEast(Chunk chunk, int x, int y, int z, MeshData meshData) {
-		meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f));
-		meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z - 0.5f));
-		meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f));
-		meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f));
-		
-		meshData.AddQuadTriangles();
-		meshData.uv.AddRange(GetQuadUVs(Direction.east));
+		meshData = AddFaceQuad(chunk, x, y, z, new int[4] {6, 5, 0, 3}, Direction.east, meshData);
+
+		if(isSmoothShaded) {
+			meshData.AddNormal(new Vector3(1, -1, -1));
+			meshData.AddNormal(new Vector3(1, 1, -1));
+			meshData.AddNormal(new Vector3(1, 1, 1));
+			meshData.AddNormal(new Vector3(1, -1, 1));
+		}
+
 		return meshData;
 	}
 
 	protected virtual MeshData FaceDataWest(Chunk chunk, int x, int y, int z, MeshData meshData) {
-		meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z + 0.5f));
-		meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z + 0.5f));
-		meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f));
-		meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f));
-		
-		meshData.AddQuadTriangles();
-		meshData.uv.AddRange(GetQuadUVs(Direction.west));
+		meshData = AddFaceQuad(chunk, x, y, z, new int[4] {2, 1, 4, 7}, Direction.west, meshData);
+
+		if(isSmoothShaded) {
+			meshData.AddNormal(new Vector3(-1, -1, 1));
+			meshData.AddNormal(new Vector3(-1, 1, 1));
+			meshData.AddNormal(new Vector3(-1, 1, -1));
+			meshData.AddNormal(new Vector3(-1, -1, -1));
+		}
+
 		return meshData;
 	}
 
 	protected virtual MeshData FaceDataUp(Chunk chunk, int x, int y, int z, MeshData meshData) {
-		meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z + 0.5f));
-		meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f));
-		meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z - 0.5f));
-		meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f));
+		meshData = AddFaceQuad(chunk, x, y, z, new int[4] {4, 1, 0, 5}, Direction.up, meshData);
 
-		meshData.AddQuadTriangles();
-		meshData.uv.AddRange(GetQuadUVs(Direction.up));
+		if(isSmoothShaded) {
+			meshData.AddNormal(new Vector3(-1, 1, 1));
+			meshData.AddNormal(new Vector3(1, 1, 1));
+			meshData.AddNormal(new Vector3(1, 1, -1));
+			meshData.AddNormal(new Vector3(-1, 1, -1));
+		}
+
 		return meshData;
 	}
 	
 	protected virtual MeshData FaceDataDown(Chunk chunk, int x, int y, int z, MeshData meshData) {
-		meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f));
-		meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f));
-		meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f));
-		meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z + 0.5f));
-		
-		meshData.AddQuadTriangles();
-		meshData.uv.AddRange(GetQuadUVs(Direction.down));
+		meshData = AddFaceQuad(chunk, x, y, z, new int[4] {2, 7, 6, 3}, Direction.down, meshData);
+
+		if(isSmoothShaded) {
+			meshData.AddNormal(new Vector3(-1, -1, -1));
+			meshData.AddNormal(new Vector3(1, -1, -1));
+			meshData.AddNormal(new Vector3(1, -1, 1));
+			meshData.AddNormal(new Vector3(-1, -1, 1));
+		}
+
 		return meshData;
 	}
 
@@ -283,10 +298,10 @@ public class Block {
 	public virtual Vector2[] GetQuadUVs(Tile tilePos) {
 		Vector2[] UVs = new Vector2[4];
 		
-		UVs[0] = new Vector2(tileSize*tilePos.x + tileSize, tileSize*tilePos.y);
-		UVs[1] = new Vector2(tileSize*tilePos.x + tileSize, tileSize*tilePos.y + tileSize);
-		UVs[2] = new Vector2(tileSize*tilePos.x, tileSize*tilePos.y + tileSize);
-		UVs[3] = new Vector2(tileSize*tilePos.x, tileSize*tilePos.y);
+		UVs[0] = new Vector2(tileSize*tilePos.x, tileSize*tilePos.y);
+		UVs[1] = new Vector2(tileSize*tilePos.x, tileSize*tilePos.y + tileSize);
+		UVs[2] = new Vector2(tileSize*tilePos.x + tileSize, tileSize*tilePos.y + tileSize);
+		UVs[3] = new Vector2(tileSize*tilePos.x + tileSize, tileSize*tilePos.y);
 		
 		return UVs;
 	}
@@ -294,9 +309,9 @@ public class Block {
 	public virtual Vector2[] GetTriUVs(Tile tilePos) {
 		Vector2[] UVs = new Vector2[3];
 		
-		UVs[0] = new Vector2(tileSize*tilePos.x + tileSize, tileSize*tilePos.y);
-		UVs[1] = new Vector2(tileSize*tilePos.x + tileSize, tileSize*tilePos.y + tileSize);
-		UVs[2] = new Vector2(tileSize*tilePos.x, tileSize*tilePos.y);
+		UVs[0] = new Vector2(tileSize*tilePos.x, tileSize*tilePos.y);
+		UVs[1] = new Vector2(tileSize*tilePos.x, tileSize*tilePos.y + tileSize);
+		UVs[2] = new Vector2(tileSize*tilePos.x + tileSize, tileSize*tilePos.y);
 		
 		return UVs;
 	}

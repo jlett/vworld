@@ -27,7 +27,7 @@ public static class Terrain {
 	}
 
 	public static bool SetBlock(RaycastHit hit, Block block, bool adjacent = false) {
-		Chunk chunk = hit.collider.GetComponent<Chunk>();
+		Chunk chunk = hit.collider.GetComponent<ChunkContainer>().chunk;
 		if(chunk == null)
 			return false;
 
