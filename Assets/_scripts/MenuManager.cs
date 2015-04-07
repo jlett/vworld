@@ -1,12 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+using System.Linq;
 
 public class MenuManager : MonoBehaviour {
 
 	public GameObject mainMenu, optionsMenu, playMenu;
 	public GameObject newWorldOptions, loadWorldOptions, joinWorldOptions;
+	public GameObject loadWorldScrollContent, joinWorldScrollContent;
 
-	public string roomName;
+	public GameObject listItem;
+	public string curListItem;//name of currently selected list item
+	
 	private RoomInfo[] roomsList;
 
 	void Start () {
@@ -67,11 +72,69 @@ public class MenuManager : MonoBehaviour {
 		newWorldOptions.SetActive(false);
 		loadWorldOptions.SetActive(true);
 		joinWorldOptions.SetActive(false);
-	}
 
+		//clear any existing items
+		foreach (Transform item in loadWorldScrollContent.transform) 
+			Destroy(item.gameObject);
+
+		//load items
+		int numItems = 8;
+		int itemHeight = ((int)listItem.GetComponent<RectTransform>().rect.height) + 6;//includes padding
+
+		if(loadWorldScrollContent.GetComponent<RectTransform>().rect.height < numItems*itemHeight) {
+			loadWorldScrollContent.GetComponent<RectTransform>().sizeDelta = new Vector2(listItem.GetComponent<RectTransform>().rect.width, numItems*itemHeight);
+		}
+
+		for(int i = 0; i < numItems; i++) {
+			string name = "world name";
+
+			GameObject itemObject = GameObject.Instantiate(listItem) as GameObject;
+			itemObject.transform.SetParent(loadWorldScrollContent.transform, false);
+			itemObject.GetComponent<Toggle>().group = loadWorldScrollContent.GetComponent<ToggleGroup>();
+			itemObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -i*itemHeight);
+		}
+	}
+	
 	public void ShowJoinWorldOptions() {
 		newWorldOptions.SetActive(false);
 		loadWorldOptions.SetActive(false);
 		joinWorldOptions.SetActive(true);
+
+		//clear any existing items
+		foreach (Transform item in joinWorldScrollContent.transform) 
+			Destroy(item.gameObject);
+		
+		//load items
+		int numItems = 8;
+		int itemHeight = ((int)listItem.GetComponent<RectTransform>().rect.height) + 6;//includes padding
+		
+		if(joinWorldScrollContent.GetComponent<RectTransform>().rect.height < numItems*itemHeight) {
+			joinWorldScrollContent.GetComponent<RectTransform>().sizeDelta = new Vector2(listItem.GetComponent<RectTransform>().rect.width, numItems*itemHeight);
+		}
+		
+		for(int i = 0; i < numItems; i++) {
+			GameObject itemObject = GameObject.Instantiate(listItem) as GameObject;
+			itemObject.transform.SetParent(joinWorldScrollContent.transform, false);
+			itemObject.GetComponent<Toggle>().group = joinWorldScrollContent.GetComponent<ToggleGroup>();
+			itemObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -i*itemHeight);
+		}
+	}
+
+	public void CreateWorld(string name, string seed, bool isPrivate) {
+
+	}
+
+	public void LoadWorld() {
+		if(loadWorldScrollContent.GetComponent<ToggleGroup>().ActiveToggles().Count() == 0)
+			return;
+		string name = loadWorldScrollContent.GetComponent<ToggleGroup>().ActiveToggles().First().GetComponentsInChildren<Text>()[0].text;
+		Debug.Log(name);
+	}
+
+	public void JoinWorld() {
+		if(joinWorldScrollContent.GetComponent<ToggleGroup>().ActiveToggles().Count() == 0)
+			return;
+		string name = joinWorldScrollContent.GetComponent<ToggleGroup>().ActiveToggles().First().GetComponentsInChildren<Text>()[0].text;
+		Debug.Log(name);
 	}
 }
