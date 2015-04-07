@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public static class Terrain {
@@ -19,9 +19,9 @@ public static class Terrain {
 	static float MoveWithinBlock(float pos, float norm, bool adjacent = false) {
 		if(pos - (int)pos == 0.5f || pos - (int)pos == -0.5f) {
 			if(adjacent)
-				pos += norm/2;
+				pos += norm/10;//divide by a bunch just to be sure we dont go too far
 			else
-				pos -= norm/2;
+				pos -= norm/10;
 		}
 		return (float)pos;
 	}

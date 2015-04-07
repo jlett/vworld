@@ -4,32 +4,20 @@ using UnityEngine.UI;
 using System.Linq;
 
 public class MenuManager : MonoBehaviour {
-
+	
 	public GameObject mainMenu, optionsMenu, playMenu;
 	public GameObject newWorldOptions, loadWorldOptions, joinWorldOptions;
 	public GameObject loadWorldScrollContent, joinWorldScrollContent;
+	public GameObject newWorldNameInput, newWorldSeedInput;
 
-	public GameObject listItem;
-	public string curListItem;//name of currently selected list item
-	
-	private RoomInfo[] roomsList;
+	public GameObject listItem, world;
 
 	void Start () {
 		ShowMainMenu();
-
-		PhotonNetwork.ConnectUsingSettings("0.0.1");
 	}
 
 	void Update() {
 
-	}
-
-	void OnReceivedRoomListUpdate() {
-		roomsList = PhotonNetwork.GetRoomList();
-	}
-
-	void OnJoinedRoom() {
-		Debug.Log("connected to room");
 	}
 
 	//--------------------------------------------------button functions--------------------------------------------------
@@ -86,8 +74,6 @@ public class MenuManager : MonoBehaviour {
 		}
 
 		for(int i = 0; i < numItems; i++) {
-			string name = "world name";
-
 			GameObject itemObject = GameObject.Instantiate(listItem) as GameObject;
 			itemObject.transform.SetParent(loadWorldScrollContent.transform, false);
 			itemObject.GetComponent<Toggle>().group = loadWorldScrollContent.GetComponent<ToggleGroup>();
@@ -120,8 +106,27 @@ public class MenuManager : MonoBehaviour {
 		}
 	}
 
-	public void CreateWorld(string name, string seed, bool isPrivate) {
+	public void CreateWorld() {
+		bool isPublic = newWorldOptions.GetComponentInChildren<Toggle>().isOn;
+		string worldName = newWorldNameInput.GetComponent<InputField>().text;
+		string worldSeed = newWorldSeedInput.GetComponent<InputField>().text;
 
+		mainMenu.SetActive(false);
+		optionsMenu.SetActive(false);
+		playMenu.SetActive(false);
+
+		GameObject w = Instantiate(world) as GameObject;
+		w.name = worldName;
+		w.GetComponent<World>().worldName = worldName;
+		w.GetComponent<World>().seed = worldSeed;
+
+		if(isPublic) {//if public, open it for networking
+			GetComponent<NetworkManager>().StartWorld(worldName);
+		} else {//just spawn a player, dont worry about other stuff
+			//TODO
+		}
+
+		Debug.Log("creating world with name: " + worldName + ", seed: " + worldSeed + " and public: " + isPublic.ToString());
 	}
 
 	public void LoadWorld() {
