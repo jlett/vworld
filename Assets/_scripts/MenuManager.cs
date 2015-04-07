@@ -4,11 +4,14 @@ using System.Collections;
 public class MenuManager : MonoBehaviour {
 
 	public GameObject mainMenu, optionsMenu, playMenu;
+	public GameObject newWorldOptions, loadWorldOptions, joinWorldOptions;
 
 	public string roomName;
 	private RoomInfo[] roomsList;
 
 	void Start () {
+		ShowMainMenu();
+
 		PhotonNetwork.ConnectUsingSettings("0.0.1");
 	}
 
@@ -39,13 +42,36 @@ public class MenuManager : MonoBehaviour {
 		playMenu.SetActive(false);
 	}
 
-	public void ExitGame() {
-		Application.Quit();
-	}
-
 	public void ShowMainMenu() {
 		mainMenu.SetActive(true);
 		optionsMenu.SetActive(false);
 		playMenu.SetActive(false);
+
+		newWorldOptions.SetActive(false);
+		loadWorldOptions.SetActive(false);
+		joinWorldOptions.SetActive(false);
+	}
+
+	public void ExitGame() {
+		Application.Quit();
+	}
+
+	//play menu buttons
+	public void ShowNewWorldOptions() {
+		newWorldOptions.SetActive(true);
+		loadWorldOptions.SetActive(false);
+		joinWorldOptions.SetActive(false);
+	}
+
+	public void ShowLoadWorldOptions() {
+		newWorldOptions.SetActive(false);
+		loadWorldOptions.SetActive(true);
+		joinWorldOptions.SetActive(false);
+	}
+
+	public void ShowJoinWorldOptions() {
+		newWorldOptions.SetActive(false);
+		loadWorldOptions.SetActive(false);
+		joinWorldOptions.SetActive(true);
 	}
 }
