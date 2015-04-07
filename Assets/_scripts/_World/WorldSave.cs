@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System;
 
 [Serializable]
-public class PlayerSave {
+public class WorldSave {
 	public Vector3 pos;
+	public string seed;
 	
-	public PlayerSave(Player p) {
+	public WorldSave(Player p) {
 		pos = p.transform.position;
+		seed = p.world.seed;
 	}
 }

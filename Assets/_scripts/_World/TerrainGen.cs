@@ -29,18 +29,18 @@ public class TerrainGen {
 	}
 
 	public Chunk ChunkColumnGen(Chunk chunk, int x, int z) {
-		int stoneHeight = Mathf.FloorToInt(stoneBaseHeight);													//set base height
-		stoneHeight += GetNoise(x, 0, z, stoneMountainFrequency, Mathf.FloorToInt(stoneMountainHeight), 0.6f);		//add mountain noise
+		int stoneHeight = Mathf.FloorToInt(stoneBaseHeight);																			//set base height
+		stoneHeight += GetNoise(x, 0, z, chunk.world.seed, stoneMountainFrequency, Mathf.FloorToInt(stoneMountainHeight), 0.6f);		//add mountain noise
 		if(stoneHeight < stoneMinHeight)
-			stoneHeight = Mathf.FloorToInt(stoneMinHeight);														//raise all stone up to min height (if needed)
-		stoneHeight += GetNoise(x, 0, z, stoneBaseNoise, Mathf.FloorToInt(stoneBaseNoiseHeight), 0.2f);				//add base noise
+			stoneHeight = Mathf.FloorToInt(stoneMinHeight);																				//raise all stone up to min height (if needed)
+		stoneHeight += GetNoise(x, 0, z, chunk.world.seed, stoneBaseNoise, Mathf.FloorToInt(stoneBaseNoiseHeight), 0.2f);				//add base noise
 
-		int dirtHeight = stoneHeight + Mathf.FloorToInt(dirtBaseHeight);										//set base dirt height
-		dirtHeight += GetNoise(x, 100, z, dirtNoise, Mathf.FloorToInt(dirtNoiseHeight), 0.2f);						//add noise to dirt height
+		int dirtHeight = stoneHeight + Mathf.FloorToInt(dirtBaseHeight);																//set base dirt height
+		dirtHeight += GetNoise(x, 100, z, chunk.world.seed, dirtNoise, Mathf.FloorToInt(dirtNoiseHeight), 0.2f);						//add noise to dirt height
 
-		int grassHeight = dirtHeight + 1;																		//add layer of grass on top
+		int grassHeight = dirtHeight + 1;																								//add layer of grass on top
 
-		for(int y = chunk.pos.y; y < chunk.pos.y + Chunk.chunkSize; y++) {										//decide which block goes where based on height
+		for(int y = chunk.pos.y; y < chunk.pos.y + Chunk.chunkSize; y++) {																//decide which block goes where based on height
 			if(y <= stoneHeight) {
 				chunk.SetBlock(x - chunk.pos.x, y - chunk.pos.y, z - chunk.pos.z, new BlockStone());
 			} else if(y <= dirtHeight) {
@@ -54,8 +54,7 @@ public class TerrainGen {
 		return chunk;
 	}
 
-	public static int GetNoise(int x, int y, int z, float scale, int max, float intensity) {
-		string seed = "hello world!";
+	public static int GetNoise(int x, int y, int z, string seed, float scale, int max, float intensity) {
 		PinkNoise n = new PinkNoise(seed.GetHashCode());
 		n.Persistence = intensity;
 		return Mathf.FloorToInt((n.GetValue(x*scale, y*scale, z*scale) + 1f) * (max/2f));

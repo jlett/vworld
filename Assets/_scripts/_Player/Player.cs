@@ -4,12 +4,9 @@ using System.Collections;
 public class Player : MonoBehaviour {
 
 	GameMode gameMode;
+	public World world;
 	
 	void Start () {
-	
-	}
-
-	void Update () {
-	
+		transform.GetComponent<LoadChunks>().world = world;
 	}
 }

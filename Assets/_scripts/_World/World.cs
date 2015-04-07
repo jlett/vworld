@@ -7,6 +7,7 @@ public class World : MonoBehaviour {
 	public GameObject chunkPrefab;
 
 	public string worldName = "world";
+	public string seed = "hello world";
 
 	public Chunk LoadChunk(int x, int y, int z) {
 		WorldPos worldPos = new WorldPos(x, y, z);

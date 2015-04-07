@@ -77,7 +77,7 @@ public class LoadChunks : MonoBehaviour {
 		}
 	}
 
-	void BuildChunk(WorldPos pos) {
+	void BuildChunk(WorldPos pos) {//builds chunk and the six surrounding ones
 		for(int y = pos.y - Chunk.chunkSize; y <= pos.y + Chunk.chunkSize; y+= Chunk.chunkSize) {
 			if(y > 64 || y < -64)
 				continue;
