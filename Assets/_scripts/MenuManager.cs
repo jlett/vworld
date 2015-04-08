@@ -11,6 +11,7 @@ public class MenuManager : MonoBehaviour {
 	public GameObject newWorldNameInput, newWorldSeedInput;
 
 	public GameObject listItem, world;
+	public GameObject playerPrefab;
 
 	void Start () {
 		ShowMainMenu();
@@ -123,7 +124,8 @@ public class MenuManager : MonoBehaviour {
 		if(isPublic) {//if public, open it for networking
 			GetComponent<NetworkManager>().StartWorld(worldName);
 		} else {//just spawn a player, dont worry about other stuff
-			//TODO
+			GameObject p = Instantiate(playerPrefab, new Vector3(0, 100, 0), Quaternion.identity) as GameObject;
+			p.GetComponent<Player>().world = w.GetComponent<World>();
 		}
 
 		Debug.Log("creating world with name: " + worldName + ", seed: " + worldSeed + " and public: " + isPublic.ToString());

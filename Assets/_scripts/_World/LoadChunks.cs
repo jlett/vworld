@@ -77,22 +77,27 @@ public class LoadChunks : MonoBehaviour {
 		}
 	}
 
-	void BuildChunk(WorldPos pos) {//builds chunk and the six surrounding ones
+	void BuildChunk(WorldPos pos) {//builds chunk and the surrounding ones
+		List<Chunk> chunkData = new List<Chunk>();
 		for(int y = pos.y - Chunk.chunkSize; y <= pos.y + Chunk.chunkSize; y+= Chunk.chunkSize) {
 			if(y > 64 || y < -64)
 				continue;
 
 			for(int x = pos.x - Chunk.chunkSize; x <= pos.x + Chunk.chunkSize; x += Chunk.chunkSize) {
 				for(int z = pos.z - Chunk.chunkSize; z <= pos.z + Chunk.chunkSize; z += Chunk.chunkSize) {
-					if(world.GetChunk(x, y, z) == null) {
+					if((y == pos.y || x == pos.x || z == pos.z) && world.GetChunk(x, y, z) == null) {
 						Chunk c = new Chunk();
 						var thread = new Thread( () => {c = world.LoadChunk(x, y, z);});
 						thread.Start();
 						thread.Join();
-						world.CreateChunk(c);
+						chunkData.Add(c);
 					}
 				}
 			}
+		}
+
+		foreach(Chunk c in chunkData) {
+			world.CreateChunk(c);
 		}
 		updateList.Add(pos);
 	}
@@ -121,7 +126,7 @@ public class LoadChunks : MonoBehaviour {
 			var chunksToDelete = new List<WorldPos>();
 			foreach(var chunk in world.chunks) {
 				float dist = Vector3.Distance(new Vector3(chunk.Value.pos.x, 0, chunk.Value.pos.z), new Vector3(transform.position.x, 0, transform.position.z));
-				if(dist > 128) {
+				if(dist > 64) {
 					chunksToDelete.Add(chunk.Key);
 				}
 			}
