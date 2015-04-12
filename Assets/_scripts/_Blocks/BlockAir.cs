@@ -9,7 +9,7 @@ public class BlockAir : Block {
 		
 	}
 
-	public override MeshData BlockData (Chunk chunk, int x, int y, int z, MeshData meshData) {
+	/*public override MeshData BlockData (Chunk chunk, int x, int y, int z, MeshData meshData) {
 		meshData.useRenderDataForCollision = true;
 		//air will connect terrain blocks next to it
 		bool northSolid = chunk.GetBlock(x, y, z+1).IsSolid(Direction.south); 
@@ -61,11 +61,7 @@ public class BlockAir : Block {
 					if(!westSolid && !((chunk.GetBlock(x-1, y+1, z+1).isTerrain && chunk.GetBlock(x-1, y+1, z).isTerrain) || (chunk.GetBlock(x-1, y, z+1).isTerrain && chunk.GetBlock(x-1, y+1, z).isTerrain))) {
 						meshData = AddFaceTri(chunk, x, y, z, new int[3] {1, 16, 9}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
 					}
-				} /*else if(eastTer) {
-					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {8, 17, 18, 10}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
-				} else if(westTer) {
-					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {8, 10, 19, 16}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
-				}*/
+				}
 			} if(southTer) {
 				if(downTer) {
 					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {18, 13, 15, 19}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
@@ -83,11 +79,7 @@ public class BlockAir : Block {
 					if(!westSolid && !((chunk.GetBlock(x-1, y+1, z-1).isTerrain && chunk.GetBlock(x-1, y+1, z).isTerrain) || (chunk.GetBlock(x-1, y, z-1).isTerrain && chunk.GetBlock(x-1, y+1, z).isTerrain))) {
 						meshData = AddFaceTri(chunk, x, y, z, new int[3] {4, 15, 16}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
 					}
-				} /*else if(eastTer) {
-					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {12, 14, 18, 17}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
-				} else if(westTer) {
-					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {12, 16, 19, 14}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
-				}*/
+				}
 			} if(downTer) {
 				if(eastTer) {
 					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {11, 13, 14, 10}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
@@ -173,11 +165,7 @@ public class BlockAir : Block {
 //					if(!westSolid && !((chunk.GetBlock(x-1, y+1, z+1).isTerrain && chunk.GetBlock(x-1, y+1, z).isTerrain) || (chunk.GetBlock(x-1, y, z+1).isTerrain && chunk.GetBlock(x-1, y+1, z).isTerrain))) {
 //						meshData = AddFaceTri(chunk, x, y, z, new int[3] {1, 16, 2}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
 //					}
-//				} /*else if(eastTer) {
-//					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {8, 17, 18, 10}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
-//				} else if(westTer) {
-//					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {8, 10, 19, 16}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
-//				}*/
+//				}
 //			} if(southTer) {
 //				if(downTer) {
 //					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {5, 4, 19, 18}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
@@ -195,11 +183,7 @@ public class BlockAir : Block {
 //					if(!westSolid && !((chunk.GetBlock(x-1, y+1, z-1).isTerrain && chunk.GetBlock(x-1, y+1, z).isTerrain) || (chunk.GetBlock(x-1, y, z-1).isTerrain && chunk.GetBlock(x-1, y+1, z).isTerrain))) {
 //						meshData = AddFaceTri(chunk, x, y, z, new int[3] {16, 4, 7}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
 //					}
-//				} /*else if(eastTer) {
-//					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {12, 14, 18, 17}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
-//				} else if(westTer) {
-//					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {12, 16, 19, 14}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
-//				}*/
+//				}
 //			} if(downTer) {
 //				if(eastTer) {
 //					meshData = AddFaceQuad(chunk, x, y, z, new int[4] {0, 5, 14, 10}, GetTexturePosition(Direction.up, chunk, x, y, z), meshData);
@@ -267,13 +251,13 @@ public class BlockAir : Block {
 //			}
 //		}
 		return meshData;
-	}
+	}*/
 	
 	public override bool IsSolid (Direction direction) {
 		return false;//not solid on all sides
 	}
 
-	public override Tile GetTexturePosition (Direction direction, Chunk chunk, int x, int y, int z) {
+	/*public override Tile GetTexturePosition (Direction direction, Chunk chunk, int x, int y, int z) {
 		if(chunk == null) 
 			return base.GetTexturePosition(direction);
 
@@ -284,5 +268,5 @@ public class BlockAir : Block {
 		} else {
 			return base.GetTexturePosition(direction);
 		}
-	}
+	}*/
 }

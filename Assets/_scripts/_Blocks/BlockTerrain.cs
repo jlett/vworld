@@ -8,4 +8,8 @@ public class BlockTerrain : Block {
 	public BlockTerrain() : base() {
 		isTerrain = true;
 	}
+
+	public override MeshData BlockData (Chunk chunk, int x, int y, int z, MeshData meshData) {
+
+	}
 }
