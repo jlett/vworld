@@ -36,10 +36,29 @@ public class Chunk {
 		}
 	}
 
+	//init blocks before the first render/build call
+	public void InitBlocks() {
+		SetBlocksUnmodified();
+		SetTerrainSolidSides();
+	}
+
 	//set changed flag to false on all blocks (called during initial world gen)
 	public void SetBlocksUnmodified() {
 		foreach(Block block in blocks) {
 			block.changed = false;
+		}
+	}
+
+	//set terrain blocks initial solidity
+	public void SetTerrainSolidSides() {
+		for(int x = 0; x < chunkSize; x++) {
+			for(int y = 0; y < chunkSize; y++) {
+				for(int z = 0; z < chunkSize; z++) {
+					Block block = blocks[x, y, z];
+					if(block.isTerrain)
+						((BlockTerrain)block).SetSolidSides(this, x, y, z);
+				}
+			}
 		}
 	}
 

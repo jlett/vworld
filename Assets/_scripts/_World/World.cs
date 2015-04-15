@@ -22,7 +22,7 @@ public class World : MonoBehaviour {
 		//generate the chunk
 		var terrainGen = new TerrainGen();
 		newChunk = terrainGen.ChunkGen(newChunk);
-		newChunk.SetBlocksUnmodified();
+		newChunk.InitBlocks();
 		
 		//load changed blocks
 		Serialization.LoadChunk(newChunk);

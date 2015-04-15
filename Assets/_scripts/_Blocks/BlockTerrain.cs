@@ -8,6 +8,8 @@ public class BlockTerrain : Block {
 		isTerrain = true;
 	}
 
+	bool[] solidSides = {true, true, true, true, true, true};
+
 	public override MeshData BlockData(Chunk chunk, int x, int y, int z, MeshData meshData) {
 		//split the cube into 8 sub-cubes, one cooresponding with each vertex
 		//if the vertex is touching more than one not terrain block, cooresponding cube is split to a triangle
@@ -141,5 +143,59 @@ public class BlockTerrain : Block {
 
 
 		return meshData;
+	}
+
+	public void SetSolidSides (Chunk chunk, int x, int y, int z) {
+		bool northTer = chunk.GetBlock(x, y, z+1).isTerrain; 
+		bool southTer = chunk.GetBlock(x, y, z-1).isTerrain;
+		bool eastTer = chunk.GetBlock(x+1, y, z).isTerrain;
+		bool westTer = chunk.GetBlock(x-1, y, z).isTerrain;
+		bool upTer = chunk.GetBlock(x, y+1, z).isTerrain;
+		bool downTer = chunk.GetBlock(x, y-1, z).isTerrain;
+
+		if(Convert.ToInt32(northTer) + Convert.ToInt32(eastTer) + Convert.ToInt32(upTer) < 2) {
+			solidSides[(int)Direction.north] = false;
+			solidSides[(int)Direction.east] = false;
+			solidSides[(int)Direction.up] = false;
+		}
+		if(Convert.ToInt32(northTer) + Convert.ToInt32(westTer) + Convert.ToInt32(upTer) < 2) {
+			solidSides[(int)Direction.north] = false;
+			solidSides[(int)Direction.west] = false;
+			solidSides[(int)Direction.up] = false;
+		}
+		if(Convert.ToInt32(northTer) + Convert.ToInt32(westTer) + Convert.ToInt32(downTer) < 2) {
+			solidSides[(int)Direction.north] = false;
+			solidSides[(int)Direction.west] = false;
+			solidSides[(int)Direction.down] = false;
+		}
+		if(Convert.ToInt32(northTer) + Convert.ToInt32(eastTer) + Convert.ToInt32(downTer) < 2) {
+			solidSides[(int)Direction.north] = false;
+			solidSides[(int)Direction.east] = false;
+			solidSides[(int)Direction.down] = false;
+		}
+		if(Convert.ToInt32(southTer) + Convert.ToInt32(westTer) + Convert.ToInt32(upTer) < 2) {
+			solidSides[(int)Direction.south] = false;
+			solidSides[(int)Direction.west] = false;
+			solidSides[(int)Direction.up] = false;
+		}
+		if(Convert.ToInt32(southTer) + Convert.ToInt32(eastTer) + Convert.ToInt32(upTer) < 2) {
+			solidSides[(int)Direction.south] = false;
+			solidSides[(int)Direction.east] = false;
+			solidSides[(int)Direction.up] = false;
+		}
+		if(Convert.ToInt32(southTer) + Convert.ToInt32(eastTer) + Convert.ToInt32(downTer) < 2) {
+			solidSides[(int)Direction.south] = false;
+			solidSides[(int)Direction.east] = false;
+			solidSides[(int)Direction.down] = false;
+		}
+		if(Convert.ToInt32(southTer) + Convert.ToInt32(westTer) + Convert.ToInt32(downTer) < 2) {
+			solidSides[(int)Direction.south] = false;
+			solidSides[(int)Direction.west] = false;
+			solidSides[(int)Direction.down] = false;
+		}
+	}
+
+	public override bool IsSolid (Direction direction) {
+		return solidSides[(int)direction];
 	}
 }
