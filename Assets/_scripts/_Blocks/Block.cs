@@ -130,7 +130,7 @@ public class Block {
 		return meshData;
 	}
 
-	/*helper functions, numbers refer to point refered to in notes
+	/*helper functions for custom mesh generation, numbers refer to point refered to in notes
 	 * NUMBER IN CLOCKWISE ORDER
 	 * 0 = +++
 	 * 1 = -++
@@ -155,9 +155,6 @@ public class Block {
 	 * 19 = --0
 	 * dir = which face to texture with
 	 */
-	protected MeshData AddFaceTri(Chunk chunk, int x, int y, int z, int[] t, Direction dir, MeshData meshData) {
-		return AddFaceTri(chunk, x, y, z, t, GetTexturePosition(dir), meshData);
-	}
 
 	protected MeshData AddFaceTri(Chunk chunk, int x, int y, int z, int[] t, Tile tile, MeshData meshData) {
 		if(t.Length != 3) {
@@ -212,6 +209,10 @@ public class Block {
 		
 		meshData.uv.AddRange(GetTriUVs(tile));
 		return meshData;
+	}
+
+	protected MeshData AddFaceTri(Chunk chunk, int x, int y, int z, int[] t, Direction dir, MeshData meshData) {
+		return AddFaceTri(chunk, x, y, z, t, GetTexturePosition(dir), meshData);
 	}
 	
 	protected MeshData AddFaceQuad(Chunk chunk, int x, int y, int z, int[] t, Tile tile, MeshData meshData) {
@@ -271,6 +272,51 @@ public class Block {
 
 	protected MeshData AddFaceQuad(Chunk chunk, int x, int y, int z, int[] t, Direction dir, MeshData meshData) {
 		return AddFaceQuad(chunk, x, y, z, t, GetTexturePosition(dir), meshData);
+	}
+
+	protected MeshData AddFaceTri(Chunk chunk, int x, int y, int z, Vector3[] t, Tile tile, MeshData meshData) {
+		if(t.Length != 3) {
+			Debug.LogError("3 points are required for a tri... idiot");
+		}
+		for(int i = 0; i < 3; i++) {
+			meshData.AddVertex(new Vector3(x + t[i].x, y + t[i].y, z + t[i].z));
+		}
+		meshData.AddTriangle();
+		
+		meshData.uv.AddRange(GetTriUVs(tile));
+		return meshData;
+	}
+	
+	protected MeshData AddFaceTri(Chunk chunk, int x, int y, int z, Vector3[] t, Direction dir, MeshData meshData) {
+		return AddFaceTri(chunk, x, y, z, t, GetTexturePosition(dir), meshData);
+	}
+
+	protected MeshData AddFaceQuad(Chunk chunk, int x, int y, int z, Vector3[] t, Tile tile, MeshData meshData) {
+		if(t.Length != 4) {
+			Debug.LogError("4 points are required for a quad... idiot");
+		}
+		for(int i = 0; i < 4; i++) {
+			meshData.AddVertex(new Vector3(x + t[i].x, y + t[i].y, z + t[i].z));
+		}
+		meshData.AddQuadTriangles();
+		
+		meshData.uv.AddRange(GetQuadUVs(tile));
+		return meshData;
+	}
+	
+	protected MeshData AddFaceQuad(Chunk chunk, int x, int y, int z, Vector3[] t, Direction dir, MeshData meshData) {
+		return AddFaceQuad(chunk, x, y, z, t, GetTexturePosition(dir), meshData);
+	}
+
+	protected MeshData AddCubeWithVerts(Chunk chunk, int x, int y, int z, Vector3[] t, MeshData meshData) {
+		if(t.Length != 8) {
+			Debug.LogError("Can't add cube without 8 verts");
+			return null;
+		}
+
+
+
+		return meshData;
 	}
 
 	//to be overridden by special case blocks
