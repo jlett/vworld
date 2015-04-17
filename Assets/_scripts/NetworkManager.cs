@@ -23,6 +23,12 @@ public class NetworkManager : MonoBehaviour {
 
 	public void StartWorld(string name) {
 		worldName = name;
-		PhotonNetwork.CreateRoom(name, true, true, 4);
+
+		RoomOptions ro = new RoomOptions();
+		ro.maxPlayers = 4;
+		ro.isVisible = true;
+		ro.isOpen = true;
+
+		PhotonNetwork.CreateRoom(name, ro, null);
 	}
 }
