@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System;
 using System.Collections.Generic;
@@ -180,7 +180,7 @@ public class Block {
 				meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f));
 			} else if(t[i] == 7) {
 				meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f));
-			} else if(t[i] == 8) {//
+			} else if(t[i] == 8) {
 				meshData.AddVertex(new Vector3(x, y + 0.5f, z + 0.5f));
 			} else if(t[i] == 9) {
 				meshData.AddVertex(new Vector3(x - 0.5f, y, z + 0.5f));
@@ -235,7 +235,7 @@ public class Block {
 				meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f));
 			} else if(t[i] == 7) {
 				meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f));
-			} else if(t[i] == 8) {//
+			} else if(t[i] == 8) { 
 				meshData.AddVertex(new Vector3(x, y + 0.5f, z + 0.5f));
 			} else if(t[i] == 9) {
 				meshData.AddVertex(new Vector3(x - 0.5f, y, z + 0.5f));
