@@ -2,10 +2,10 @@
 using System.Collections;
 
 public class Player : MonoBehaviour {
-
-	GameMode gameMode;
+	
 	public World world;
-	public PhotonView photonView;
+	private PhotonView photonView;
+	public GameObject camera;
 	
 	void Start () {
 		photonView = PhotonView.Get(gameObject);
@@ -20,5 +20,14 @@ public class Player : MonoBehaviour {
 		}
 
 		transform.GetComponent<LoadChunks>().world = world;
+
+		if(!photonView.isMine) {
+			GetComponent<LoadChunks>().enabled = false;
+			GetComponent<GameModeSurvival>().enabled = false;
+			GetComponent<GameModeCreative>().enabled = false;
+			GetComponent<CharacterController>().enabled = false;
+		} else {
+			camera.SetActive(true);
+		}
 	}
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public static class Terrain {
+public static class EditTerrain {
 
 	//make WorldPos from a vector3
 	public static WorldPos GetBlockPos(Vector3 pos) {

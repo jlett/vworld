@@ -92,7 +92,8 @@ public class MenuManager : MonoBehaviour {
 			Destroy(item.gameObject);
 		
 		//load items
-		int numItems = 8;
+		RoomInfo[] roomsList = GetComponent<NetworkManager>().roomsList;
+		int numItems = roomsList.Length;
 		int itemHeight = ((int)listItem.GetComponent<RectTransform>().rect.height) + 6;//includes padding
 		
 		if(joinWorldScrollContent.GetComponent<RectTransform>().rect.height < numItems*itemHeight) {
@@ -104,6 +105,7 @@ public class MenuManager : MonoBehaviour {
 			itemObject.transform.SetParent(joinWorldScrollContent.transform, false);
 			itemObject.GetComponent<Toggle>().group = joinWorldScrollContent.GetComponent<ToggleGroup>();
 			itemObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -i*itemHeight);
+			itemObject.GetComponentInChildren<Text>().text = roomsList[i].name;
 		}
 	}
 
@@ -115,18 +117,8 @@ public class MenuManager : MonoBehaviour {
 		mainMenu.SetActive(false);
 		optionsMenu.SetActive(false);
 		playMenu.SetActive(false);
-
-		GameObject w = Instantiate(world) as GameObject;
-		w.name = worldName;
-		w.GetComponent<World>().worldName = worldName;
-		w.GetComponent<World>().seed = worldSeed;
-
-		if(isPublic) {//if public, open it for networking
-			GetComponent<NetworkManager>().StartWorld(worldName);
-		} else {//just spawn a player, dont worry about other stuff
-			GameObject p = Instantiate(playerPrefab, new Vector3(0, 100, 0), Quaternion.identity) as GameObject;
-			p.GetComponent<Player>().world = w.GetComponent<World>();
-		}
+	
+		GetComponent<NetworkManager>().StartWorld(worldName, worldSeed, isPublic);
 
 		Debug.Log("creating world with name: " + worldName + ", seed: " + worldSeed + " and public: " + isPublic.ToString());
 	}
@@ -142,6 +134,6 @@ public class MenuManager : MonoBehaviour {
 		if(joinWorldScrollContent.GetComponent<ToggleGroup>().ActiveToggles().Count() == 0)
 			return;
 		string name = joinWorldScrollContent.GetComponent<ToggleGroup>().ActiveToggles().First().GetComponentsInChildren<Text>()[0].text;
-		Debug.Log(name);
+		GetComponent<NetworkManager>().JoinWorld(name);
 	}
 }

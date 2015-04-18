@@ -9,6 +9,20 @@ public class World : MonoBehaviour {
 	public string worldName = "world";
 	public string seed = "hello world";
 
+	public PhotonView photonView;
+
+	void Start() {
+		photonView = PhotonView.Get(gameObject);
+		
+		if(photonView.instantiationData != null) {
+			object[] data = photonView.instantiationData;
+
+			worldName = (string)data[0];
+			gameObject.name = (string)data[0];
+			seed = (string)data[1];
+		} 
+	}
+
 	public Chunk LoadChunk(int x, int y, int z) {
 		WorldPos worldPos = new WorldPos(x, y, z);
 

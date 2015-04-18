@@ -8,12 +8,12 @@ public class GameModeCreative : GameMode {
 			if (Input.GetMouseButtonDown(1)) {
 				RaycastHit hit;
 				if (Physics.Raycast(transform.GetChild(0).position, transform.GetChild(0).forward,out hit, 100 )) {
-					Terrain.SetBlock(hit, new BlockAir());
+					EditTerrain.SetBlock(hit, new BlockAir());
 				}
 			} else if (Input.GetMouseButtonDown(0)) {
 				RaycastHit hit;
 				if (Physics.Raycast(transform.GetChild(0).position, transform.GetChild(0).forward,out hit, 100 )) {
-					Terrain.SetBlock(hit, new BlockDirt(), true);
+					EditTerrain.SetBlock(hit, new BlockDirt(), true);
 				}
 			}
 		}
