@@ -54,9 +54,9 @@ public class TerrainGen {
 		return chunk;
 	}
 
-	public static int GetNoise(int x, int y, int z, string seed, float scale, int max, float intensity) {
+	public static int GetNoise(int x, int y, int z, string seed, float scale, int max, float persistence) {
 		PinkNoise n = new PinkNoise(seed.GetHashCode());
-		n.Persistence = intensity;
+		n.Persistence = persistence;
 		return Mathf.FloorToInt((n.GetValue(x*scale, y*scale, z*scale) + 1f) * (max/2f));
 	}
 }
