@@ -308,13 +308,38 @@ public class Block {
 		return AddFaceQuad(chunk, x, y, z, t, GetTexturePosition(dir), meshData);
 	}
 
+	//possibly misleading function name since it will add any deformed cube-ish shape
 	protected MeshData AddCubeWithVerts(Chunk chunk, int x, int y, int z, Vector3[] t, MeshData meshData) {
 		if(t.Length != 8) {
 			Debug.LogError("Can't add cube without 8 verts");
 			return null;
 		}
 
+		bool northSolid = chunk.GetBlock(x, y, z+1).IsSolid(Direction.south); 
+		bool southSolid = chunk.GetBlock(x, y, z-1).IsSolid(Direction.north);
+		bool eastSolid = chunk.GetBlock(x+1, y, z).IsSolid(Direction.west);
+		bool westSolid = chunk.GetBlock(x-1, y, z).IsSolid(Direction.east);
+		bool upSolid = chunk.GetBlock(x, y+1, z).IsSolid(Direction.down);
+		bool downSolid = chunk.GetBlock(x, y-1, z).IsSolid(Direction.up);
 
+		if(!northSolid) {
+			meshData = AddFaceQuad(chunk, x, y, z, new Vector3[] {t[3], t[0], t[1], t[2]}, Direction.north, meshData);
+		}
+		if(!southSolid) {
+			meshData = AddFaceQuad(chunk, x, y, z, new Vector3[] {t[7], t[4], t[5], t[6]}, Direction.south, meshData);
+		}
+		if(!eastSolid) {
+			meshData = AddFaceQuad(chunk, x, y, z, new Vector3[] {t[6], t[5], t[0], t[3]}, Direction.east, meshData);
+		}
+		if(!westSolid) {
+			meshData = AddFaceQuad(chunk, x, y, z, new Vector3[] {t[2], t[1], t[4], t[7]}, Direction.west, meshData);
+		}
+		if(!upSolid) {
+			meshData = AddFaceQuad(chunk, x, y, z, new Vector3[] {t[4], t[1], t[0], t[5]}, Direction.up, meshData);
+		}
+		if(!downSolid) {
+			meshData = AddFaceQuad(chunk, x, y, z, new Vector3[] {t[6], t[3], t[2], t[7]}, Direction.down, meshData);
+		}
 
 		return meshData;
 	}
