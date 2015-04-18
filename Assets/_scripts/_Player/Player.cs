@@ -5,7 +5,6 @@ public class Player : MonoBehaviour {
 	
 	public World world;
 	private PhotonView photonView;
-	public GameObject camera;
 	
 	void Start () {
 		photonView = PhotonView.Get(gameObject);
@@ -27,7 +26,7 @@ public class Player : MonoBehaviour {
 			GetComponent<GameModeCreative>().enabled = false;
 			GetComponent<CharacterController>().enabled = false;
 		} else {
-			camera.SetActive(true);
+			transform.GetChild(0).gameObject.SetActive(true);
 		}
 	}
 }
