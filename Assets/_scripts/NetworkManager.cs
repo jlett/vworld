@@ -21,10 +21,12 @@ public class NetworkManager : MonoBehaviour {
 	}
 
 	void OnJoinedRoom() {
-		object[] worldData = new object[2];
-		worldData[0] = worldName;
-		worldData[1] = worldSeed;
-		PhotonNetwork.InstantiateSceneObject("_prefabs/World", Vector3.zero, Quaternion.identity, 0, worldData);
+		if(PhotonNetwork.isMasterClient) {
+			object[] worldData = new object[2];
+			worldData[0] = worldName;
+			worldData[1] = worldSeed;
+			PhotonNetwork.InstantiateSceneObject("_prefabs/World", Vector3.zero, Quaternion.identity, 0, worldData);
+		}
 		
 		object[] playerData = new object[1];
 		playerData[0] = worldName;
