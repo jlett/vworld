@@ -11,14 +11,16 @@ public class Player : MonoBehaviour {
 		
 		if(photonView.instantiationData != null) {
 			object[] data = photonView.instantiationData;
-			world = GameObject.Find((string)data[0]).GetComponent<World>();
-		} 
+			world = GameObject.FindGameObjectWithTag("World").GetComponent<World>();
+		} else {
+			Debug.LogError("player got no instantiation data");
+		}
 
 		if(world == null){
 			Debug.LogError("uhhh, where's my world data? -player");
 		}
 
-		transform.GetComponent<LoadChunks>().world = world;
+		Debug.Log(photonView.isMine + " - " + name);
 
 		if(!photonView.isMine) {
 			GetComponent<LoadChunks>().enabled = false;
@@ -26,7 +28,9 @@ public class Player : MonoBehaviour {
 			GetComponent<GameModeCreative>().enabled = false;
 			GetComponent<CharacterController>().enabled = false;
 		} else {
+			tag = "MyPlayer";
 			transform.GetChild(0).gameObject.SetActive(true);
+			GetComponent<LoadChunks>().world = world;
 		}
 	}
 }

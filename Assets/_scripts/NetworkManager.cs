@@ -17,6 +17,7 @@ public class NetworkManager : MonoBehaviour {
 	}
 
 	public void JoinWorld(string name) {
+		worldName = name;
 		PhotonNetwork.JoinRoom(name);
 	}
 
