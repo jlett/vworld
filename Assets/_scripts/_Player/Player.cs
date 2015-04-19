@@ -8,13 +8,8 @@ public class Player : MonoBehaviour {
 	
 	void Start () {
 		photonView = PhotonView.Get(gameObject);
-		
-		if(photonView.instantiationData != null) {
-			object[] data = photonView.instantiationData;
-			world = GameObject.FindGameObjectWithTag("World").GetComponent<World>();
-		} else {
-			Debug.LogError("player got no instantiation data");
-		}
+
+		world = GameObject.FindGameObjectWithTag("World").GetComponent<World>();
 
 		if(world == null){
 			Debug.LogError("uhhh, where's my world data? -player");

@@ -2,8 +2,7 @@
 using System.Collections;
 
 public class NetworkManager : MonoBehaviour {
-
-	public GameObject playerPrefab;
+	
 	public RoomInfo[] roomsList;
 	private string worldName;
 	private string worldSeed;
@@ -17,7 +16,6 @@ public class NetworkManager : MonoBehaviour {
 	}
 
 	public void JoinWorld(string name) {
-		worldName = name;
 		PhotonNetwork.JoinRoom(name);
 	}
 
@@ -28,10 +26,8 @@ public class NetworkManager : MonoBehaviour {
 			worldData[1] = worldSeed;
 			PhotonNetwork.InstantiateSceneObject("_prefabs/World", Vector3.zero, Quaternion.identity, 0, worldData);
 		}
-		
-		object[] playerData = new object[1];
-		playerData[0] = worldName;
-		PhotonNetwork.Instantiate("_prefabs/" + playerPrefab.name, new Vector3(0, 100, 0), Quaternion.identity, 0, playerData);	
+
+		PhotonNetwork.Instantiate("_prefabs/Player", new Vector3(0, 100, 0), Quaternion.identity, 0);	
 	}
 
 	public void StartWorld(string name, string seed, bool isPublic) {

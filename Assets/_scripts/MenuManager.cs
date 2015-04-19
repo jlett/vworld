@@ -124,24 +124,26 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void LoadWorld() {
+		if(loadWorldScrollContent.GetComponent<ToggleGroup>().ActiveToggles().Count() == 0)
+			return;
+		string name = loadWorldScrollContent.GetComponent<ToggleGroup>().ActiveToggles().First().GetComponentsInChildren<Text>()[0].text;
+
 		mainMenu.SetActive(false);
 		optionsMenu.SetActive(false);
 		playMenu.SetActive(false);
 
-		if(loadWorldScrollContent.GetComponent<ToggleGroup>().ActiveToggles().Count() == 0)
-			return;
-		string name = loadWorldScrollContent.GetComponent<ToggleGroup>().ActiveToggles().First().GetComponentsInChildren<Text>()[0].text;
 		Debug.Log(name);
 	}
 
 	public void JoinWorld() {
+		if(joinWorldScrollContent.GetComponent<ToggleGroup>().ActiveToggles().Count() == 0)
+			return;
+		string name = joinWorldScrollContent.GetComponent<ToggleGroup>().ActiveToggles().First().GetComponentsInChildren<Text>()[0].text;
+
 		mainMenu.SetActive(false);
 		optionsMenu.SetActive(false);
 		playMenu.SetActive(false);
 
-		if(joinWorldScrollContent.GetComponent<ToggleGroup>().ActiveToggles().Count() == 0)
-			return;
-		string name = joinWorldScrollContent.GetComponent<ToggleGroup>().ActiveToggles().First().GetComponentsInChildren<Text>()[0].text;
 		GetComponent<NetworkManager>().JoinWorld(name);
 	}
 }
