@@ -9,6 +9,7 @@ public class NetworkManager : MonoBehaviour {
 
 	void Start () {
 		PhotonNetwork.ConnectUsingSettings("0.0.1");
+		PhotonNetwork.offlineMode = true;
 	}
 
 	void OnReceivedRoomListUpdate() {
