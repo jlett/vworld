@@ -5,7 +5,7 @@ using System.Linq;
 
 public class MenuManager : MonoBehaviour {
 	
-	public GameObject mainMenu, optionsMenu, playMenu, loadMenu;
+	public GameObject mainMenu, optionsMenu, playMenu;
 	public GameObject newWorldOptions, loadWorldOptions, joinWorldOptions;
 	public GameObject loadWorldScrollContent, joinWorldScrollContent;
 	public GameObject newWorldNameInput, newWorldSeedInput;
@@ -24,31 +24,22 @@ public class MenuManager : MonoBehaviour {
 	//--------------------------------------------------button functions--------------------------------------------------
 
 	//main menu buttons
-	public void HideAllMenus() {
+	public void ShowPlayMenu() {
 		mainMenu.SetActive(false);
 		optionsMenu.SetActive(false);
-		playMenu.SetActive(false);
-		loadMenu.SetActive(false);
-	}
-
-	public void ShowPlayMenu() {
-		HideAllMenus();
 		playMenu.SetActive(true);
 	}
 
 	public void ShowOptionsMenu() {
-		HideAllMenus();
+		mainMenu.SetActive(false);
 		optionsMenu.SetActive(true);
-	}
-
-	public void ShowLoadMenu() {
-		HideAllMenus();
-		loadMenu.SetActive(true);
+		playMenu.SetActive(false);
 	}
 
 	public void ShowMainMenu() {
-		HideAllMenus();
 		mainMenu.SetActive(true);
+		optionsMenu.SetActive(false);
+		playMenu.SetActive(false);
 
 		newWorldOptions.SetActive(false);
 		loadWorldOptions.SetActive(false);
@@ -123,8 +114,9 @@ public class MenuManager : MonoBehaviour {
 		string worldName = newWorldNameInput.GetComponent<InputField>().text;
 		string worldSeed = newWorldSeedInput.GetComponent<InputField>().text;
 
-		//ShowLoadMenu();
-		HideAllMenus();
+		mainMenu.SetActive(false);
+		optionsMenu.SetActive(false);
+		playMenu.SetActive(false);
 	
 		GetComponent<NetworkManager>().StartWorld(worldName, worldSeed, isPublic);
 
