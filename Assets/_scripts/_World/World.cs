@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Foundation.Tasks;
 
 public class World : MonoBehaviour {
 	public Dictionary<WorldPos, Chunk> chunks = new Dictionary<WorldPos, Chunk>();
@@ -24,27 +25,34 @@ public class World : MonoBehaviour {
 	}
 
 	public Chunk LoadChunk(int x, int y, int z) {
-		WorldPos worldPos = new WorldPos(x, y, z);
-
-		Chunk newChunk = new Chunk();
-		
-		newChunk.pos = worldPos;
-		newChunk.world = this;
-		
-		chunks.Add(worldPos, newChunk);
-		
-		//generate the chunk
-		var terrainGen = new TerrainGen();
-		newChunk = terrainGen.ChunkGen(newChunk);
-		newChunk.InitBlocks();
-		
-		//load changed blocks
-		Serialization.LoadChunk(newChunk);
-
-		return newChunk;
+		return null;
+	
 	}
 
-	public void CreateChunk(Chunk chunk) {
+	public IEnumerator CreateChunk(int x, int y, int z) {
+
+		Chunk chunk = new Chunk();
+
+		var task = UnityTask.Run(() => {
+			
+			WorldPos worldPos = new WorldPos(x, y, z);
+			
+			chunk.pos = worldPos;
+			chunk.world = this;
+			
+			chunks.Add(worldPos, chunk);
+			
+			//generate the chunk
+			var terrainGen = new TerrainGen();
+			chunk = terrainGen.ChunkGen(chunk);
+			chunk.InitBlocks();
+			
+			//load changed blocks
+			Serialization.LoadChunk(chunk);
+
+		});
+
+		yield return StartCoroutine(task.WaitRoutine());
 		GameObject newChunkObj = Instantiate(chunkPrefab, new Vector3(chunk.pos.x, chunk.pos.y, chunk.pos.z), Quaternion.identity) as GameObject;
 		ChunkContainer newChunkContainer = newChunkObj.GetComponent<ChunkContainer>();
 		newChunkContainer.chunk = chunk;

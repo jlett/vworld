@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Foundation.Tasks;
 
 public class LoadChunks : MonoBehaviour {
 
@@ -83,13 +84,14 @@ public class LoadChunks : MonoBehaviour {
 	}
 
 	void BuildChunk(WorldPos pos) {
-		if (world.GetChunk(pos.x,pos.y,pos.z) == null)
-			world.CreateChunk(world.LoadChunk(pos.x,pos.y,pos.z));
+		if (world.GetChunk(pos.x,pos.y,pos.z) == null) {
+			world.CreateChunk(pos.x, pos.y, pos.z);
+		}
 	}
 
 	void LoadAndRenderChunks() {
 		if (buildList.Count != 0) {
-			for (int i = 0; i < buildList.Count && i < 8; i++) {
+			for (int i = 0; i < buildList.Count && i < 8; ) {
 				BuildChunk(buildList[0]);
 				buildList.RemoveAt(0);
 			}
