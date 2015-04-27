@@ -76,7 +76,7 @@ public class LoadChunks : MonoBehaviour {
 						}
 					}
 					updateList.Enqueue(new WorldPos(newChunkPos.x, y * Chunk.chunkSize, newChunkPos.z));
-				}
+				};
 				return;//only one column added to list at a time
 			}
 		}
@@ -90,7 +90,15 @@ public class LoadChunks : MonoBehaviour {
 	void LoadAndRenderChunks() {
 		if (buildList.Count != 0) {
 			int buildCount = buildList.Count;
-			for (int i = 0; i < buildCount && i < 8; i++) {
+			int buildIntensity = 8;
+
+			float dist = Vector3.Distance(new Vector3(buildList.Peek().x, 0, buildList.Peek().z), new Vector3(transform.position.x, 0, transform.position.z));
+
+			buildIntensity += 8 * Mathf.FloorToInt((256 - dist)/32);
+			if(buildIntensity <= 0)
+				buildIntensity = 8;
+
+			for (int i = 0; i < buildCount && i < buildIntensity; i++) {
 				BuildChunk(buildList.Dequeue());
 			}
 			return;//If chunks were built return early
@@ -123,6 +131,7 @@ public class LoadChunks : MonoBehaviour {
 			return true;
 		}
 		deleteTimer++;
+
 		return false;
 	}
 

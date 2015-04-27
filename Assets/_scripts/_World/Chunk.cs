@@ -45,6 +45,7 @@ public class Chunk {
 
 	//updates the chunk based on it's contents
 	public void UpdateChunk() {
+		Profiler.BeginSample("Update Chunk");
 		rendered = true;
 
 		MeshData meshData = new MeshData();
@@ -58,6 +59,7 @@ public class Chunk {
 		}
 		
 		RenderMesh(meshData);
+		Profiler.EndSample();
 	}
 
 	//sends the calculated mesh info to mesh and collision components
