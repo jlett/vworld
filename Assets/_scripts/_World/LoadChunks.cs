@@ -99,9 +99,10 @@ public class LoadChunks : MonoBehaviour {
 		if ( updateList.Count!=0) {
 			WorldPos pos = updateList.Dequeue();
 			Chunk chunk = world.GetChunk(pos.x, pos.y, pos.z);
-			if (chunk != null)
+			if (chunk != null) {
 				chunk.container.Init();
 				chunk.update = true;
+			}
 		}
 	}
 
