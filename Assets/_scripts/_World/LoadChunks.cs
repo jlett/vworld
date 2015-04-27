@@ -69,7 +69,7 @@ public class LoadChunks : MonoBehaviour {
 					continue;
 
 				//otherwise load a column of chunks in this position
-				for(int y = -4; y < 4; y++) {
+				for(int y = -1; y < 3; y++) {
 					for (int x = newChunkPos.x - Chunk.chunkSize; x <= newChunkPos.x + Chunk.chunkSize; x += Chunk.chunkSize) {
 						for (int z = newChunkPos.z - Chunk.chunkSize; z <= newChunkPos.z + Chunk.chunkSize; z += Chunk.chunkSize) {
 							buildList.Enqueue(new WorldPos(x, y * Chunk.chunkSize, z));
@@ -84,7 +84,13 @@ public class LoadChunks : MonoBehaviour {
 
 	void BuildChunk(WorldPos pos) {
 		if (world.GetChunk(pos.x,pos.y,pos.z) == null) {
-			world.CreateChunk(world.LoadChunk(pos.x,pos.y,pos.z));
+			Chunk c = new Chunk();
+			var t = new Thread(() => {
+				c = world.LoadChunk(pos.x,pos.y,pos.z);
+			});
+			t.Start();
+			t.Join();
+			world.CreateChunk(c);
 		}
 	}
 
