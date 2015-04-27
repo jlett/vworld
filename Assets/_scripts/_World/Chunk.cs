@@ -31,8 +31,6 @@ public class Chunk {
 	public void SetBlock(int x, int y, int z, Block block) {
 		if(CoordInRange(x) && CoordInRange(y) && CoordInRange(z)) {
 			blocks[x, y, z] = block;
-			blocks[x, y, z].chunk = this;
-			blocks[x, y, z].pos = new WorldPos(x, y, z);
 		} else {
 			world.SetBlock(pos.x + x, pos.y + y, pos.z + z, block);
 		}
@@ -40,19 +38,6 @@ public class Chunk {
 
 	//init blocks before the first render/build call
 	public void InitBlocks() {
-		for(int x = 0; x < chunkSize; x++) {
-			for(int y = 0; y < chunkSize; y++) {
-				for(int z = 0; z < chunkSize; z++) {
-					blocks[x, y, z].chunk = this;
-					blocks[x, y, z].pos = new WorldPos(x, y, z);
-				}
-			}
-		}
-		SetBlocksUnmodified();
-	}
-
-	//set changed flag to false on all blocks (called during initial world gen)
-	public void SetBlocksUnmodified() {
 		foreach(Block block in blocks) {
 			block.changed = false;
 		}
@@ -67,7 +52,7 @@ public class Chunk {
 		for(int x = 0; x < chunkSize; x++) {
 			for(int y = 0; y < chunkSize; y++) {
 				for(int z = 0; z < chunkSize; z++) {
-					meshData = blocks[x, y, z].BlockData(meshData);
+					meshData = blocks[x, y, z].BlockData(this, x, y, z, meshData);
 				}
 			}
 		}

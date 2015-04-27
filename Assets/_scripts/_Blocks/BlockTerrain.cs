@@ -8,12 +8,8 @@ public class BlockTerrain : Block {
 		isTerrain = true;
 	}
 
-	public override MeshData BlockData(MeshData meshData) {
+	public override MeshData BlockData(Chunk chunk, int x, int y, int z, MeshData meshData) {
 		meshData.useRenderDataForCollision = true;
-
-		int x = pos.x;
-		int y = pos.y;
-		int z = pos.z;
 
 		Vector3[] verts = new Vector3[8];
 
@@ -99,41 +95,6 @@ public class BlockTerrain : Block {
 	}
 
 	public override bool IsSolid (Direction direction) {
-		
-		int x = pos.x;
-		int y = pos.y;
-		int z = pos.z;
-
-		bool northTer = chunk.GetBlock(x, y, z+1).isTerrain; 
-		bool southTer = chunk.GetBlock(x, y, z-1).isTerrain;
-		bool eastTer = chunk.GetBlock(x+1, y, z).isTerrain;
-		bool westTer = chunk.GetBlock(x-1, y, z).isTerrain;
-		bool upTer = chunk.GetBlock(x, y+1, z).isTerrain;
-		bool downTer = chunk.GetBlock(x, y-1, z).isTerrain;
-		
-		bool neTer = chunk.GetBlock(x+1, y, z+1).isTerrain;
-		bool nwTer = chunk.GetBlock(x-1, y, z+1).isTerrain;
-		bool seTer = chunk.GetBlock(x+1, y, z-1).isTerrain;
-		bool swTer = chunk.GetBlock(x-1, y, z-1).isTerrain;
-
-		if(upTer && downTer) {//always results in a full block
-			return true;
-		}
-
-		if(direction == Direction.north) {
-			return (northTer && westTer && eastTer && nwTer && neTer);
-		} else if(direction == Direction.south) {
-			return (southTer && westTer && eastTer && swTer && seTer);
-		} else if(direction == Direction.east) {
-			return (northTer && southTer && eastTer && neTer && seTer);
-		} else if(direction == Direction.west) {
-			return (northTer && westTer && southTer && nwTer && swTer);
-		} else if(direction == Direction.up) {
-			return ((northTer && westTer && eastTer && southTer) || upTer);
-		} else if(direction == Direction.down) {
-			return ((northTer && westTer && eastTer && southTer) || downTer);
-		} else {//idk how this would possibly ever be called but needed so the compiler doesn't throw a fit
-			return false;
-		}
+		return true;
 	}
 }

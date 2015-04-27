@@ -15,7 +15,6 @@ public class ChunkContainer : MonoBehaviour {
 		}
 		chunk.filter = gameObject.GetComponent<MeshFilter>();
 		chunk.coll = gameObject.GetComponent<MeshCollider>();
-		chunk.container = this;
 	}
 	
 	void Update() {

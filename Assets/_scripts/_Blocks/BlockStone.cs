@@ -3,7 +3,7 @@ using System.Collections;
 using System;
 
 [Serializable]
-public class BlockStone : BlockTerrain {
+public class BlockStone : Block {
 	public BlockStone() : base() {
 
 	}

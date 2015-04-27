@@ -10,8 +10,8 @@ public class Block {
 	public struct Tile { public int x; public int y;}
 	const float tileSize = 0.25f;//1 divided by number of tiles per side (aka 0.25 on a 4x4 texture)
 
-	public Chunk chunk;
-	public WorldPos pos;
+	//public Chunk chunk;
+	//public WorldPos pos;
 
 	public bool isTerrain = false;//should we pseudo marching cubes the block
 	public bool isSmoothShaded = false;//should we manually calc the normals to make the block smoooooth
@@ -22,12 +22,8 @@ public class Block {
 
 	}
 
-	public virtual MeshData BlockData(MeshData meshData) {
+	public virtual MeshData BlockData(Chunk chunk, int x, int y, int z, MeshData meshData) {
 		meshData.useRenderDataForCollision = true;
-		
-		int x = pos.x;
-		int y = pos.y;
-		int z = pos.z;
 
 		if(isSmoothShaded)
 			meshData.useCustomNormals = true;
