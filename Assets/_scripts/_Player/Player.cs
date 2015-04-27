@@ -15,15 +15,15 @@ public class Player : MonoBehaviour {
 			Debug.LogError("uhhh, where's my world data? -player");
 		}
 
-		if(!photonView.isMine) {
-			GetComponent<LoadChunks>().enabled = false;
-			GetComponent<GameModeSurvival>().enabled = false;
-			GetComponent<GameModeCreative>().enabled = false;
-			GetComponent<CharacterController>().enabled = false;
-		} else {
-			tag = "MyPlayer";
-			transform.GetChild(0).gameObject.SetActive(true);
-			GetComponent<LoadChunks>().world = world;
-		}
+//		if(!photonView.isMine) {
+//			GetComponent<LoadChunks>().enabled = false;
+//			GetComponent<GameModeSurvival>().enabled = false;
+//			GetComponent<GameModeCreative>().enabled = false;
+//			GetComponent<CharacterController>().enabled = false;
+//		} else {
+//			tag = "MyPlayer";
+//			transform.GetChild(0).gameObject.SetActive(true);
+//			GetComponent<LoadChunks>().world = world;
+//		}
 	}
 }
