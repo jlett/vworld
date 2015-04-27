@@ -34,7 +34,7 @@ public class World : MonoBehaviour {
 		chunks.Add(worldPos, newChunk);
 		
 		//generate the chunk
-		var terrainGen = new TerrainGen();
+		TerrainGen terrainGen = new TerrainGen();
 		newChunk = terrainGen.ChunkGen(newChunk);
 		newChunk.InitBlocks();
 		

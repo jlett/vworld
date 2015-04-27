@@ -15,8 +15,6 @@ public class Player : MonoBehaviour {
 			Debug.LogError("uhhh, where's my world data? -player");
 		}
 
-		Debug.Log(photonView.isMine + " - " + name);
-
 		if(!photonView.isMine) {
 			GetComponent<LoadChunks>().enabled = false;
 			GetComponent<GameModeSurvival>().enabled = false;

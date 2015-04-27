@@ -83,8 +83,9 @@ public class LoadChunks : MonoBehaviour {
 	}
 
 	void BuildChunk(WorldPos pos) {
-		if (world.GetChunk(pos.x,pos.y,pos.z) == null)
+		if (world.GetChunk(pos.x,pos.y,pos.z) == null) {
 			world.CreateChunk(world.LoadChunk(pos.x,pos.y,pos.z));
+		}
 	}
 
 	void LoadAndRenderChunks() {
@@ -101,10 +102,10 @@ public class LoadChunks : MonoBehaviour {
 			for (int i = 0; i < buildCount && i < buildIntensity; i++) {
 				BuildChunk(buildList.Dequeue());
 			}
-			return;//If chunks were built return early
+			//return;//If chunks were built return early
 		}
 
-		if ( updateList.Count!=0) {
+		if (updateList.Count!=0 && world.GetChunk(updateList.Peek().x, updateList.Peek().y, updateList.Peek().z) != null && world.GetChunk(updateList.Peek().x, updateList.Peek().y, updateList.Peek().z).container != null) {
 			WorldPos pos = updateList.Dequeue();
 			Chunk chunk = world.GetChunk(pos.x, pos.y, pos.z);
 			if (chunk != null) {
@@ -115,7 +116,7 @@ public class LoadChunks : MonoBehaviour {
 	}
 
 	bool DeleteChunks() {
-		if(deleteTimer == 10) {
+		if(deleteTimer == 20) {
 			deleteTimer = 0;
 			var chunksToDelete = new List<WorldPos>();
 			foreach(var chunk in world.chunks) {
