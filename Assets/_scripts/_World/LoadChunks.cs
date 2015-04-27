@@ -7,8 +7,8 @@ public class LoadChunks : MonoBehaviour {
 
 	public World world;
 
-	List<WorldPos>updateList = new List<WorldPos>();
-	List<WorldPos>buildList = new List<WorldPos>();
+	Queue<WorldPos>updateList = new Queue<WorldPos>();
+	Queue<WorldPos>buildList = new Queue<WorldPos>();
 
 	int deleteTimer = 0;
 
@@ -72,10 +72,10 @@ public class LoadChunks : MonoBehaviour {
 				for(int y = -4; y < 4; y++) {
 					for (int x = newChunkPos.x - Chunk.chunkSize; x <= newChunkPos.x + Chunk.chunkSize; x += Chunk.chunkSize) {
 						for (int z = newChunkPos.z - Chunk.chunkSize; z <= newChunkPos.z + Chunk.chunkSize; z += Chunk.chunkSize) {
-							buildList.Add(new WorldPos(x, y * Chunk.chunkSize, z));
+							buildList.Enqueue(new WorldPos(x, y * Chunk.chunkSize, z));
 						}
 					}
-					updateList.Add(new WorldPos(newChunkPos.x, y * Chunk.chunkSize, newChunkPos.z));
+					updateList.Enqueue(new WorldPos(newChunkPos.x, y * Chunk.chunkSize, newChunkPos.z));
 				}
 				return;//only one column added to list at a time
 			}
@@ -89,19 +89,19 @@ public class LoadChunks : MonoBehaviour {
 
 	void LoadAndRenderChunks() {
 		if (buildList.Count != 0) {
-			for (int i = 0; i < buildList.Count && i < 8; i++) {
-				BuildChunk(buildList[0]);
-				buildList.RemoveAt(0);
+			int buildCount = buildList.Count;
+			for (int i = 0; i < buildCount && i < 8; i++) {
+				BuildChunk(buildList.Dequeue());
 			}
 			return;//If chunks were built return early
 		}
 
 		if ( updateList.Count!=0) {
-			Chunk chunk = world.GetChunk(updateList[0].x, updateList[0].y, updateList[0].z);
+			WorldPos pos = updateList.Dequeue();
+			Chunk chunk = world.GetChunk(pos.x, pos.y, pos.z);
 			if (chunk != null)
 				chunk.container.Init();
 				chunk.update = true;
-			updateList.RemoveAt(0);
 		}
 	}
 
