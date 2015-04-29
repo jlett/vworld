@@ -8,25 +8,23 @@ public class Block {
 
 	public enum Direction {north, south, east, west, up, down};
 	public struct Tile { public int x; public int y;}
+	public Face[] faces = new Face[6];
 	const float tileSize = 0.25f;//1 divided by number of tiles per side (aka 0.25 on a 4x4 texture)
-
-	//public Chunk chunk;
-	//public WorldPos pos;
 
 	public bool isTerrain = false;//should we pseudo marching cubes the block
 	public bool isSmoothShaded = false;//should we manually calc the normals to make the block smoooooth
 	public bool changed = true;//for saving purposes
+	public bool customMesh = true;
 
 	//base constructor
 	public Block() {
-
+		for(int i = 0; i < 6; i++) {
+			faces[i] = new Face(this, false);
+		}
 	}
 
-	public virtual MeshData BlockData(Chunk chunk, int x, int y, int z, MeshData meshData) {
-		meshData.useRenderDataForCollision = true;
-
-		if(isSmoothShaded)
-			meshData.useCustomNormals = true;
+	public virtual bool Update(Chunk chunk, int x, int y, int z) {
+		//Profiler.BeginSample("Update Block");
 
 		bool northSolid = chunk.GetBlock(x, y, z+1).IsSolid(Direction.south); 
 		bool southSolid = chunk.GetBlock(x, y, z-1).IsSolid(Direction.north);
@@ -35,29 +33,68 @@ public class Block {
 		bool upSolid = chunk.GetBlock(x, y+1, z).IsSolid(Direction.down);
 		bool downSolid = chunk.GetBlock(x, y-1, z).IsSolid(Direction.up);
 		if(!northSolid) {
-			meshData = FaceDataNorth(chunk, x, y, z, meshData);
+			GetFace(Direction.north).isVisible = IsSolid(Direction.north);
+		} else {
+			GetFace(Direction.north).isVisible = false;
 		}
 		if(!southSolid) {
-			meshData = FaceDataSouth(chunk, x, y, z, meshData);
+			GetFace(Direction.south).isVisible = IsSolid(Direction.south);
+		} else {
+			GetFace(Direction.south).isVisible = false;
 		}
 		if(!eastSolid) {
-			meshData = FaceDataEast(chunk, x, y, z, meshData);
+			GetFace(Direction.east).isVisible = IsSolid(Direction.east);
+		} else {
+			GetFace(Direction.east).isVisible = false;
 		}
 		if(!westSolid) {
-			meshData = FaceDataWest(chunk, x, y, z, meshData);
+			GetFace(Direction.west).isVisible = IsSolid(Direction.west);
+		} else {
+			GetFace(Direction.west).isVisible = false;
 		}
 		if(!upSolid) {
-			meshData = FaceDataUp(chunk, x, y, z, meshData);
+			GetFace(Direction.up).isVisible = IsSolid(Direction.up);
+		} else {
+			GetFace(Direction.up).isVisible = false;
 		}
 		if(!downSolid) {
-			meshData = FaceDataDown(chunk, x, y, z, meshData);
+			GetFace(Direction.down).isVisible = IsSolid(Direction.down);
+		} else {
+			GetFace(Direction.down).isVisible = false;
 		}
+
+		//Profiler.EndSample();
+
+		return true;
+	}
+
+	public Face GetFace(Direction dir) {
+		return faces[(int)dir];
+	}
+
+	public virtual MeshData BlockData(Chunk chunk, int x, int y, int z, MeshData meshData) {
+		meshData.useRenderDataForCollision = true;
+		customMesh = false;
 		return meshData;
 	}
 
-	protected virtual MeshData FaceDataNorth(Chunk chunk, int x, int y, int z, MeshData meshData) {
-		meshData = AddFaceQuad(chunk, x, y, z, new int[4] {3, 0, 1, 2}, Direction.north, meshData);
+	//to be overridden by special case blocks
+	public virtual bool IsSolid(Direction direction) {
+		return true;//by default block is solid on all sides
+	}
 
+	//to be overridden by textured blocks (aka like everything)
+	public virtual Tile GetTexturePosition(Direction direction, Chunk chunk = null, int x = 0, int y = 0, int z = 0) {
+		Tile tile = new Tile();
+		tile.x = 0;
+		tile.y = 0;
+
+		return tile;
+	}
+
+	protected virtual MeshData AddFaceNorth(Chunk chunk, int x, int y, int z, MeshData meshData) {
+		meshData = AddFaceQuad(chunk, x, y, z, new int[4] {3, 0, 1, 2}, Direction.north, meshData);
+		
 		if(isSmoothShaded) {
 			meshData.AddNormal(new Vector3(1, -1, 1));
 			meshData.AddNormal(new Vector3(1, 1, 1));
@@ -67,72 +104,72 @@ public class Block {
 		
 		return meshData;
 	}
-
-	protected virtual MeshData FaceDataSouth(Chunk chunk, int x, int y, int z, MeshData meshData) {
+	
+	protected virtual MeshData AddFaceSouth(Chunk chunk, int x, int y, int z, MeshData meshData) {
 		meshData = AddFaceQuad(chunk, x, y, z, new int[4] {7, 4, 5, 6}, Direction.south, meshData);
-
+		
 		if(isSmoothShaded) {
 			meshData.AddNormal(new Vector3(-1, -1, -1));
 			meshData.AddNormal(new Vector3(-1, 1, -1));
 			meshData.AddNormal(new Vector3(1, 1, -1));
 			meshData.AddNormal(new Vector3(1, -1, -1));
 		}
-
-		return meshData;
-	}
-
-	protected virtual MeshData FaceDataEast(Chunk chunk, int x, int y, int z, MeshData meshData) {
-		meshData = AddFaceQuad(chunk, x, y, z, new int[4] {6, 5, 0, 3}, Direction.east, meshData);
-
-		if(isSmoothShaded) {
-			meshData.AddNormal(new Vector3(1, -1, -1));
-			meshData.AddNormal(new Vector3(1, 1, -1));
-			meshData.AddNormal(new Vector3(1, 1, 1));
-			meshData.AddNormal(new Vector3(1, -1, 1));
-		}
-
-		return meshData;
-	}
-
-	protected virtual MeshData FaceDataWest(Chunk chunk, int x, int y, int z, MeshData meshData) {
-		meshData = AddFaceQuad(chunk, x, y, z, new int[4] {2, 1, 4, 7}, Direction.west, meshData);
-
-		if(isSmoothShaded) {
-			meshData.AddNormal(new Vector3(-1, -1, 1));
-			meshData.AddNormal(new Vector3(-1, 1, 1));
-			meshData.AddNormal(new Vector3(-1, 1, -1));
-			meshData.AddNormal(new Vector3(-1, -1, -1));
-		}
-
-		return meshData;
-	}
-
-	protected virtual MeshData FaceDataUp(Chunk chunk, int x, int y, int z, MeshData meshData) {
-		meshData = AddFaceQuad(chunk, x, y, z, new int[4] {4, 1, 0, 5}, Direction.up, meshData);
-
-		if(isSmoothShaded) {
-			meshData.AddNormal(new Vector3(-1, 1, 1));
-			meshData.AddNormal(new Vector3(1, 1, 1));
-			meshData.AddNormal(new Vector3(1, 1, -1));
-			meshData.AddNormal(new Vector3(-1, 1, -1));
-		}
-
+		
 		return meshData;
 	}
 	
-	protected virtual MeshData FaceDataDown(Chunk chunk, int x, int y, int z, MeshData meshData) {
+	protected virtual MeshData AddFaceEast(Chunk chunk, int x, int y, int z, MeshData meshData) {
+		meshData = AddFaceQuad(chunk, x, y, z, new int[4] {6, 5, 0, 3}, Direction.east, meshData);
+		
+		if(isSmoothShaded) {
+			meshData.AddNormal(new Vector3(1, -1, -1));
+			meshData.AddNormal(new Vector3(1, 1, -1));
+			meshData.AddNormal(new Vector3(1, 1, 1));
+			meshData.AddNormal(new Vector3(1, -1, 1));
+		}
+		
+		return meshData;
+	}
+	
+	protected virtual MeshData AddFaceWest(Chunk chunk, int x, int y, int z, MeshData meshData) {
+		meshData = AddFaceQuad(chunk, x, y, z, new int[4] {2, 1, 4, 7}, Direction.west, meshData);
+		
+		if(isSmoothShaded) {
+			meshData.AddNormal(new Vector3(-1, -1, 1));
+			meshData.AddNormal(new Vector3(-1, 1, 1));
+			meshData.AddNormal(new Vector3(-1, 1, -1));
+			meshData.AddNormal(new Vector3(-1, -1, -1));
+		}
+		
+		return meshData;
+	}
+	
+	protected virtual MeshData AddFaceUp(Chunk chunk, int x, int y, int z, MeshData meshData) {
+		meshData = AddFaceQuad(chunk, x, y, z, new int[4] {4, 1, 0, 5}, Direction.up, meshData);
+		
+		if(isSmoothShaded) {
+			meshData.AddNormal(new Vector3(-1, 1, 1));
+			meshData.AddNormal(new Vector3(1, 1, 1));
+			meshData.AddNormal(new Vector3(1, 1, -1));
+			meshData.AddNormal(new Vector3(-1, 1, -1));
+		}
+		
+		return meshData;
+	}
+	
+	protected virtual MeshData AddFaceDown(Chunk chunk, int x, int y, int z, MeshData meshData) {
 		meshData = AddFaceQuad(chunk, x, y, z, new int[4] {2, 7, 6, 3}, Direction.down, meshData);
-
+		
 		if(isSmoothShaded) {
 			meshData.AddNormal(new Vector3(-1, -1, -1));
 			meshData.AddNormal(new Vector3(1, -1, -1));
 			meshData.AddNormal(new Vector3(1, -1, 1));
 			meshData.AddNormal(new Vector3(-1, -1, 1));
 		}
-
+		
 		return meshData;
 	}
-
+	
 	/*helper functions for custom mesh generation, numbers refer to point refered to in notes
 	 * NUMBER IN CLOCKWISE ORDER
 	 * 0 = +++
@@ -158,7 +195,7 @@ public class Block {
 	 * 19 = --0
 	 * dir = which face to texture with
 	 */
-
+	
 	protected MeshData AddFaceTri(Chunk chunk, int x, int y, int z, int[] t, Tile tile, MeshData meshData) {
 		if(t.Length != 3) {
 			Debug.LogError("3 points are required for a tri... idiot");
@@ -213,7 +250,7 @@ public class Block {
 		meshData.uv.AddRange(GetTriUVs(tile));
 		return meshData;
 	}
-
+	
 	protected MeshData AddFaceTri(Chunk chunk, int x, int y, int z, int[] t, Direction dir, MeshData meshData) {
 		return AddFaceTri(chunk, x, y, z, t, GetTexturePosition(dir), meshData);
 	}
@@ -272,11 +309,11 @@ public class Block {
 		meshData.uv.AddRange(GetQuadUVs(tile));
 		return meshData;
 	}
-
+	
 	protected MeshData AddFaceQuad(Chunk chunk, int x, int y, int z, int[] t, Direction dir, MeshData meshData) {
 		return AddFaceQuad(chunk, x, y, z, t, GetTexturePosition(dir), meshData);
 	}
-
+	
 	protected MeshData AddFaceTri(Chunk chunk, int x, int y, int z, Vector3[] t, Tile tile, MeshData meshData) {
 		if(t.Length != 3) {
 			Debug.LogError("3 points are required for a tri... idiot");
@@ -293,7 +330,7 @@ public class Block {
 	protected MeshData AddFaceTri(Chunk chunk, int x, int y, int z, Vector3[] t, Direction dir, MeshData meshData) {
 		return AddFaceTri(chunk, x, y, z, t, GetTexturePosition(dir), meshData);
 	}
-
+	
 	protected MeshData AddFaceQuad(Chunk chunk, int x, int y, int z, Vector3[] t, Tile tile, MeshData meshData) {
 		if(t.Length != 4) {
 			Debug.LogError("4 points are required for a quad... idiot");
@@ -310,21 +347,21 @@ public class Block {
 	protected MeshData AddFaceQuad(Chunk chunk, int x, int y, int z, Vector3[] t, Direction dir, MeshData meshData) {
 		return AddFaceQuad(chunk, x, y, z, t, GetTexturePosition(dir), meshData);
 	}
-
+	
 	//possibly misleading function name since it will add any deformed cube-ish shape
 	protected MeshData AddCubeWithVerts(Chunk chunk, int x, int y, int z, Vector3[] t, MeshData meshData) {
 		if(t.Length != 8) {
 			Debug.LogError("Can't add cube without 8 verts");
 			return null;
 		}
-
+		
 		bool northSolid = chunk.GetBlock(x, y, z+1).IsSolid(Direction.south); 
 		bool southSolid = chunk.GetBlock(x, y, z-1).IsSolid(Direction.north);
 		bool eastSolid = chunk.GetBlock(x+1, y, z).IsSolid(Direction.west);
 		bool westSolid = chunk.GetBlock(x-1, y, z).IsSolid(Direction.east);
 		bool upSolid = chunk.GetBlock(x, y+1, z).IsSolid(Direction.down);
 		bool downSolid = chunk.GetBlock(x, y-1, z).IsSolid(Direction.up);
-
+		
 		if(!northSolid) {
 			meshData = AddFaceQuad(chunk, x, y, z, new Vector3[] {t[3], t[0], t[1], t[2]}, Direction.north, meshData);
 		}
@@ -343,22 +380,8 @@ public class Block {
 		if(!downSolid) {
 			meshData = AddFaceQuad(chunk, x, y, z, new Vector3[] {t[6], t[3], t[2], t[7]}, Direction.down, meshData);
 		}
-
+		
 		return meshData;
-	}
-
-	//to be overridden by special case blocks
-	public virtual bool IsSolid(Direction direction) {
-		return true;//by default block is solid on all sides
-	}
-
-	//to be overridden by textured blocks (aka like everything)
-	public virtual Tile GetTexturePosition(Direction direction, Chunk chunk = null, int x = 0, int y = 0, int z = 0) {
-		Tile tile = new Tile();
-		tile.x = 0;
-		tile.y = 0;
-
-		return tile;
 	}
 
 	public virtual Vector2[] GetQuadUVs(Direction dir) {

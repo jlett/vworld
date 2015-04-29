@@ -105,5 +105,4 @@ public class MeshData {
 	public void AddNormal(Vector3 v) {
 		normals.Add(v.normalized);
 	}
-
 }
