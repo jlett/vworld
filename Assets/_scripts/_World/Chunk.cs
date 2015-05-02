@@ -114,7 +114,6 @@ public class Chunk
 					n = 0;
 					
 					for (x[v] = 0; x[v] < chunkSize; x[v]++) {
-						
 						for (x[u] = 0; x[u] < chunkSize; x[u]++) {
 							
 							/*
@@ -143,9 +142,7 @@ public class Chunk
 					n = 0;
 					
 					for (j = 0; j < chunkSize; j++) {
-						
 						for (i = 0; i < chunkSize;) {
-							
 							if (mask [n] != null) {
 								
 								/*
@@ -159,18 +156,15 @@ public class Chunk
 								bool done = false;
 								
 								for (h = 1; j + h < chunkSize; h++) {
-									
 									for (k = 0; k < w; k++) {
-										
 										if (mask [n + k + h * chunkSize] == null || !mask [n + k + h * chunkSize].CanMeshWith(mask [n])) {
 											done = true;
 											break;
 										}
 									}
 									
-									if (done) {
+									if (done)
 										break;
-									}
 								}
 								/*
                                  * Here we check the "transparent" attribute in the VoxelFace class to ensure that we don't mesh 
@@ -201,16 +195,15 @@ public class Chunk
                                      * example lighting values used to create ambient occlusion.
                                      */
 									if(!backFace)
-										AddQuad(mask[n].block, new Vector3[4] {new Vector3 (x [0], x [1], x [2]), new Vector3 (x [0] + du [0], x [1] + du [1], x [2] + du [2]), new Vector3 (x [0] + du [0] + dv [0], x [1] + du [1] + dv [1], x [2] + du [2] + dv [2]), new Vector3 (x [0] + dv [0], x [1] + dv [1], x [2] + dv [2])}, side, meshData);
+										AddQuad(mask[n].block, new Vector3[4] {new Vector3 (x [0], x [1], x [2]), new Vector3 (x [0] + du [0], x [1] + du [1], x [2] + du [2]), new Vector3 (x [0] + du [0] + dv [0], x [1] + du [1] + dv [1], x [2] + du [2] + dv [2]), new Vector3 (x [0] + dv [0], x [1] + dv [1], x [2] + dv [2])}, side, w, h, meshData);
 									else
-										AddQuad(mask[n].block, new Vector3[4] {new Vector3 (x [0], x [1], x [2]), new Vector3 (x [0] + dv [0], x [1] + dv [1], x [2] + dv [2]), new Vector3 (x [0] + du [0] + dv [0], x [1] + du [1] + dv [1], x [2] + du [2] + dv [2]), new Vector3 (x [0] + du [0], x [1] + du [1], x [2] + du [2])}, side, meshData);
+										AddQuad(mask[n].block, new Vector3[4] {new Vector3 (x [0], x [1], x [2]), new Vector3 (x [0] + dv [0], x [1] + dv [1], x [2] + dv [2]), new Vector3 (x [0] + du [0] + dv [0], x [1] + du [1] + dv [1], x [2] + du [2] + dv [2]), new Vector3 (x [0] + du [0], x [1] + du [1], x [2] + du [2])}, side, w, h, meshData);
 								}
 								
 								/*
                                  * We zero out the mask
                                  */
 								for (l = 0; l < h; ++l) {
-									
 									for (k = 0; k < w; ++k) {
 										mask [n + k + l * chunkSize] = null;
 									}
@@ -237,7 +230,7 @@ public class Chunk
 		Profiler.EndSample ();
 	}
 
-	protected MeshData AddQuad(Block b, Vector3[] t, Block.Tile tile, MeshData meshData) {
+	protected MeshData AddQuad(Block b, Vector3[] t, Block.Tile tile, int w, int h, MeshData meshData) {
 		if(t.Length != 4) {
 			Debug.LogError("4 points are required for a quad... idiot");
 		}
@@ -245,13 +238,21 @@ public class Chunk
 			meshData.AddVertex(new Vector3(t[i].x, t[i].y, t[i].z));
 		}
 		meshData.AddQuadTriangles();
-		
+
+		List<Vector2> uv = new List<Vector2>();
+//		int texHeight = Mathf.FloorToInt((1f/Block.tileSize) + 0.5f);
+//		float sideCoord = Block.tileSize * ((float)(texHeight - tile.y));
+//		uv.Add(new Vector2(0, sideCoord + (h * texHeight)));
+//		uv.Add(new Vector2(w, sideCoord + (h * texHeight)));
+//		uv.Add(new Vector2(0, sideCoord));
+//		uv.Add(new Vector2(w, sideCoord));
+//		meshData.uv.AddRange(uv);
 		meshData.uv.AddRange(b.GetQuadUVs(tile));
 		return meshData;
 	}
 	
-	protected MeshData AddQuad(Block b, Vector3[] t, Block.Direction dir, MeshData meshData) {
-		return AddQuad(b, t, b.GetTexturePosition(dir), meshData);
+	protected MeshData AddQuad(Block b, Vector3[] t, Block.Direction dir, int w, int h, MeshData meshData) {
+		return AddQuad(b, t, b.GetTexturePosition(dir), w, h, meshData);
 	}
 		
 	//sends the calculated mesh info to mesh and collision components

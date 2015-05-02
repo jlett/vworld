@@ -9,7 +9,7 @@ public class Block {
 	public enum Direction {north, south, east, west, up, down};
 	public struct Tile { public int x; public int y;}
 	public Face[] faces = new Face[6];
-	const float tileSize = 0.25f;//1 divided by number of tiles per side (aka 0.25 on a 4x4 texture)
+	public const float tileSize = 0.25f;//1 divided by number of tiles per side (aka 0.25 on a 4x4 texture)
 
 	public bool isTerrain = false;//should we pseudo marching cubes the block
 	public bool isSmoothShaded = false;//should we manually calc the normals to make the block smoooooth
@@ -92,84 +92,6 @@ public class Block {
 		return tile;
 	}
 
-	protected virtual MeshData AddFaceNorth(Chunk chunk, int x, int y, int z, MeshData meshData) {
-		meshData = AddFaceQuad(chunk, x, y, z, new int[4] {3, 0, 1, 2}, Direction.north, meshData);
-		
-		if(isSmoothShaded) {
-			meshData.AddNormal(new Vector3(1, -1, 1));
-			meshData.AddNormal(new Vector3(1, 1, 1));
-			meshData.AddNormal(new Vector3(-1, 1, 1));
-			meshData.AddNormal(new Vector3(-1, -1, 1));
-		}
-		
-		return meshData;
-	}
-	
-	protected virtual MeshData AddFaceSouth(Chunk chunk, int x, int y, int z, MeshData meshData) {
-		meshData = AddFaceQuad(chunk, x, y, z, new int[4] {7, 4, 5, 6}, Direction.south, meshData);
-		
-		if(isSmoothShaded) {
-			meshData.AddNormal(new Vector3(-1, -1, -1));
-			meshData.AddNormal(new Vector3(-1, 1, -1));
-			meshData.AddNormal(new Vector3(1, 1, -1));
-			meshData.AddNormal(new Vector3(1, -1, -1));
-		}
-		
-		return meshData;
-	}
-	
-	protected virtual MeshData AddFaceEast(Chunk chunk, int x, int y, int z, MeshData meshData) {
-		meshData = AddFaceQuad(chunk, x, y, z, new int[4] {6, 5, 0, 3}, Direction.east, meshData);
-		
-		if(isSmoothShaded) {
-			meshData.AddNormal(new Vector3(1, -1, -1));
-			meshData.AddNormal(new Vector3(1, 1, -1));
-			meshData.AddNormal(new Vector3(1, 1, 1));
-			meshData.AddNormal(new Vector3(1, -1, 1));
-		}
-		
-		return meshData;
-	}
-	
-	protected virtual MeshData AddFaceWest(Chunk chunk, int x, int y, int z, MeshData meshData) {
-		meshData = AddFaceQuad(chunk, x, y, z, new int[4] {2, 1, 4, 7}, Direction.west, meshData);
-		
-		if(isSmoothShaded) {
-			meshData.AddNormal(new Vector3(-1, -1, 1));
-			meshData.AddNormal(new Vector3(-1, 1, 1));
-			meshData.AddNormal(new Vector3(-1, 1, -1));
-			meshData.AddNormal(new Vector3(-1, -1, -1));
-		}
-		
-		return meshData;
-	}
-	
-	protected virtual MeshData AddFaceUp(Chunk chunk, int x, int y, int z, MeshData meshData) {
-		meshData = AddFaceQuad(chunk, x, y, z, new int[4] {4, 1, 0, 5}, Direction.up, meshData);
-		
-		if(isSmoothShaded) {
-			meshData.AddNormal(new Vector3(-1, 1, 1));
-			meshData.AddNormal(new Vector3(1, 1, 1));
-			meshData.AddNormal(new Vector3(1, 1, -1));
-			meshData.AddNormal(new Vector3(-1, 1, -1));
-		}
-		
-		return meshData;
-	}
-	
-	protected virtual MeshData AddFaceDown(Chunk chunk, int x, int y, int z, MeshData meshData) {
-		meshData = AddFaceQuad(chunk, x, y, z, new int[4] {2, 7, 6, 3}, Direction.down, meshData);
-		
-		if(isSmoothShaded) {
-			meshData.AddNormal(new Vector3(-1, -1, -1));
-			meshData.AddNormal(new Vector3(1, -1, -1));
-			meshData.AddNormal(new Vector3(1, -1, 1));
-			meshData.AddNormal(new Vector3(-1, -1, 1));
-		}
-		
-		return meshData;
-	}
-	
 	/*helper functions for custom mesh generation, numbers refer to point refered to in notes
 	 * NUMBER IN CLOCKWISE ORDER
 	 * 0 = +++
