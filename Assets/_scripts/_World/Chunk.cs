@@ -194,10 +194,8 @@ public class Chunk
                                      * all the attributes of the face - which allows for variables to be passed to shaders - for 
                                      * example lighting values used to create ambient occlusion.
                                      */
-									if(!backFace)
-										AddQuad(mask[n].block, new Vector3[4] {new Vector3 (x [0], x [1], x [2]), new Vector3 (x [0] + du [0], x [1] + du [1], x [2] + du [2]), new Vector3 (x [0] + du [0] + dv [0], x [1] + du [1] + dv [1], x [2] + du [2] + dv [2]), new Vector3 (x [0] + dv [0], x [1] + dv [1], x [2] + dv [2])}, side, w, h, meshData);
-									else
-										AddQuad(mask[n].block, new Vector3[4] {new Vector3 (x [0], x [1], x [2]), new Vector3 (x [0] + dv [0], x [1] + dv [1], x [2] + dv [2]), new Vector3 (x [0] + du [0] + dv [0], x [1] + du [1] + dv [1], x [2] + du [2] + dv [2]), new Vector3 (x [0] + du [0], x [1] + du [1], x [2] + du [2])}, side, w, h, meshData);
+									AddQuad(mask[n].block, new Vector3[4] {new Vector3 (x [0], x [1], x [2]), new Vector3 (x [0] + du [0], x [1] + du [1], x [2] + du [2]), new Vector3 (x [0] + du [0] + dv [0], x [1] + du [1] + dv [1], x [2] + du [2] + dv [2]), new Vector3 (x [0] + dv [0], x [1] + dv [1], x [2] + dv [2])}, side, w, h, backFace, meshData);
+								
 								}
 								
 								/*
@@ -230,16 +228,23 @@ public class Chunk
 		Profiler.EndSample ();
 	}
 
-	protected MeshData AddQuad(Block b, Vector3[] t, Block.Tile tile, int w, int h, MeshData meshData) {
+	protected MeshData AddQuad(Block b, Vector3[] t, Block.Tile tile, int w, int h, bool backFace, MeshData meshData) {
 		if(t.Length != 4) {
 			Debug.LogError("4 points are required for a quad... idiot");
 		}
-		for(int i = 0; i < 4; i++) {
-			meshData.AddVertex(new Vector3(t[i].x, t[i].y, t[i].z));
+		if(!backFace) {
+			for(int i = 0; i < 4; i++) {
+				meshData.AddVertex(new Vector3(t[i].x, t[i].y, t[i].z));
+			}
+			meshData.AddQuadTriangles();
+		} else {
+			for(int i = 3; i >= 0; i--) {
+				meshData.AddVertex(new Vector3(t[i].x, t[i].y, t[i].z));
+			}
+			meshData.AddQuadTriangles();
 		}
-		meshData.AddQuadTriangles();
 
-		List<Vector2> uv = new List<Vector2>();
+//		List<Vector2> uv = new List<Vector2>();
 //		int texHeight = Mathf.FloorToInt((1f/Block.tileSize) + 0.5f);
 //		float sideCoord = Block.tileSize * ((float)(texHeight - tile.y));
 //		uv.Add(new Vector2(0, sideCoord + (h * texHeight)));
@@ -247,12 +252,34 @@ public class Chunk
 //		uv.Add(new Vector2(0, sideCoord));
 //		uv.Add(new Vector2(w, sideCoord));
 //		meshData.uv.AddRange(uv);
-		meshData.uv.AddRange(b.GetQuadUVs(tile));
+//		meshData.uv.AddRange(b.GetQuadUVs(tile));
+
+		List<Vector2> uv = new List<Vector2>();
+		uv.Add(new Vector2(Block.tileSize*tile.x, Block.tileSize*tile.y));
+		uv.Add(new Vector2(Block.tileSize*tile.x, Block.tileSize*tile.y));
+		uv.Add(new Vector2(Block.tileSize*tile.x, Block.tileSize*tile.y));
+		uv.Add(new Vector2(Block.tileSize*tile.x, Block.tileSize*tile.y));
+		meshData.uv.AddRange(uv);
+
+		List<Vector2> uv2 = new List<Vector2>();
+		if(false) {
+			uv2.Add(new Vector2(0, 0));
+			uv2.Add(new Vector2(0, h));
+			uv2.Add(new Vector2(w, h));
+			uv2.Add(new Vector2(w, 0));
+		} else {
+			uv2.Add(new Vector2(0, 0));
+			uv2.Add(new Vector2(w, 0));
+			uv2.Add(new Vector2(w, h));
+			uv2.Add(new Vector2(0, h));
+		}
+		meshData.uv2.AddRange(uv2);
+
 		return meshData;
 	}
 	
-	protected MeshData AddQuad(Block b, Vector3[] t, Block.Direction dir, int w, int h, MeshData meshData) {
-		return AddQuad(b, t, b.GetTexturePosition(dir), w, h, meshData);
+	protected MeshData AddQuad(Block b, Vector3[] t, Block.Direction dir, int w, int h, bool backFace, MeshData meshData) {
+		return AddQuad(b, t, b.GetTexturePosition(dir), w, h, backFace, meshData);
 	}
 		
 	//sends the calculated mesh info to mesh and collision components
@@ -263,6 +290,7 @@ public class Chunk
 		filter.mesh.triangles = meshData.triangles.ToArray ();
 			
 		filter.mesh.uv = meshData.uv.ToArray ();
+		filter.mesh.uv2 = meshData.uv2.ToArray ();
 			
 		if (meshData.useCustomNormals)
 			filter.mesh.normals = meshData.normals.ToArray ();

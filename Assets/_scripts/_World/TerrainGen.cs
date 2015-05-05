@@ -48,7 +48,7 @@ public class TerrainGen {
 		dirtHeight += GetPerlinNoise(x, 100, z, chunk.world.seed, dirtNoise, Mathf.FloorToInt(dirtNoiseHeight), 0.2f);						//add noise to dirt height																							//add layer of grass on top
 
 		for(int y = chunk.pos.y-8; y < chunk.pos.y + Chunk.chunkSize; y++) {															//decide which block goes where based on height
-			if(caveSize > GetPerlinNoise(x, y, z, chunk.world.seed, caveFrequency, 100, 0.3f)) {
+			if(caveSize > /*GetPerlinNoise(x, y, z, chunk.world.seed, caveFrequency, 100, 0.3f)*/1000) {
 				SetBlock(x, y, z, new BlockAir(), chunk);
 			}else if(y <= stoneHeight) {
 				SetBlock(x, y, z, new BlockStone(), chunk);

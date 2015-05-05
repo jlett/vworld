@@ -10,6 +10,7 @@ public class Block {
 	public struct Tile { public int x; public int y;}
 	public Face[] faces = new Face[6];
 	public const float tileSize = 0.25f;//1 divided by number of tiles per side (aka 0.25 on a 4x4 texture)
+//	public const float tileSize = 0;//1 divided by number of tiles per side (aka 0.25 on a 4x4 texture)
 
 	public bool isTerrain = false;//should we pseudo marching cubes the block
 	public bool isSmoothShaded = false;//should we manually calc the normals to make the block smoooooth
